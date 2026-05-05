@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: 'DM Serif Display', serif;
+  --font-sans: 'DM Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme default */
+html.dark {
+  --bg-primary: #111118;
+  --bg-secondary: #1A1A24;
+  --bg-card: #1A1A24;
+  --text-primary: #F5F5F7;
+  --text-secondary: #9CA3AF;
+  --text-muted: #9CA3AF;
+  --border-color: #374151;
+}
+html.dark body,
+html.dark {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Light theme */
+html.light {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-card: #FFFFFF;
+  --text-primary: #111118;
+  --text-secondary: #4B5563;
+  --text-muted: #6B7280;
+  --border-color: #E5E7EB;
+}
+html.light body,
+html.light {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Component utility classes */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-card { background-color: var(--bg-card); }
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.border-theme { border-color: var(--border-color); }
+
+/* Legacy color mappings */
+html.dark .bg-nearBlack { background-color: #111118 !important; }
+html.dark .bg-offWhite { background-color: #1A1A24 !important; }
+html.dark .text-nearBlack { color: #F5F5F7 !important; }
+html.dark .text-midGray { color: #9CA3AF !important; }
+html.dark .text-lightGray { color: #9CA3AF !important; }
+html.dark .border-nearBlack { border-color: #374151 !important; }
+html.dark .border-lightGray { border-color: #374151 !important; }
+html.dark .border-offWhite { border-color: #F5F5F7 !important; }
+
+html.light .bg-nearBlack { background-color: #FFFFFF !important; }
+html.light .bg-offWhite { background-color: #F8F9FA !important; }
+html.light .text-nearBlack { color: #111118 !important; }
+html.light .text-midGray { color: #4B5563 !important; }
+html.light .text-lightGray { color: #4B5563 !important; }
+html.light .border-nearBlack { border-color: #E5E7EB !important; }
+html.light .border-lightGray { border-color: #E5E7EB !important; }
+html.light .border-offWhite { border-color: #111118 !important; }
+
+@layer components {
+  .btn-primary {
+    @apply bg-indigo text-white px-6 py-3 text-sm font-medium transition-all duration-150 ease-out hover:bg-indigo-light hover:-translate-y-0.5 shadow-neo hover:shadow-neoLg cursor-pointer border-none;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent text-indigo border-2 border-indigo px-6 py-3 text-sm font-medium transition-all duration-150 ease-out hover:bg-white hover:-translate-y-0.5 shadow-neo hover:shadow-neoLg cursor-pointer;
+  }
+}
