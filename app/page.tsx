@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import Navigation from "@/components/Navigation";
+import VerticalDialNav from "@/components/VerticalDialNav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import CaseStudyCard from "@/components/CaseStudyCard";
@@ -217,85 +218,233 @@ const sentinelLessons = [
 
 const sentinelOutcome = "Proof-of-concept viable. AI tooling = working with humans, not replacing them.";
 
+const serenelySections = (
+  <>
+    <SectionLabel>01 — The Problem</SectionLabel>
+    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+      University students are drowning in stress with no immediate support
+    </h2>
+    <p className="text-base md:text-lg mb-4">
+      Classes, exams, family pressure, financial anxiety, homesickness — it all lands at once.
+      But the counseling center has a 6-week waitlist. The few who reach out get one hour a
+      week, which doesn&apos;t cover the 3 AM panic attack or the Sunday night spiral before exams.
+    </p>
+    <p className="text-base md:text-lg mb-4">
+      There&apos;s a market gap between &quot;nothing&quot; and &quot;professional therapy.&quot;
+      Students need something: immediate, low-friction, non-judgmental.
+    </p>
+    <StatsRow
+      stats={[
+        { number: "6 weeks", label: "Counseling waitlist" },
+        { number: "70%", label: "Avoid seeking help due to stigma" },
+        { number: "50+", label: "Active pilot users" },
+      ]}
+    />
+    <SectionLabel>02 — Discovery Process</SectionLabel>
+    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+      What students actually need
+    </h2>
+    <p className="text-base md:text-lg mb-4">
+      Spent two weeks talking to students about their mental health habits. Ran a survey with 80 students.
+    </p>
+    <ul className="list-disc ml-6 mb-4 text-base">
+      <li><strong>70%</strong> avoid seeking help because the process feels &quot;formal and scary&quot;</li>
+      <li><strong>65%</strong> would use a voice AI if it felt human and kept conversations private</li>
+      <li>They need support <em>now</em>, not in 6 weeks</li>
+    </ul>
+    <SectionLabel>03 — Core Insight</SectionLabel>
+    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+      Friction is the enemy, not information
+    </h2>
+    <p className="text-base md:text-lg mb-4">
+      Students know counseling exists. The barrier is the friction: scheduling, sitting in an office,
+      worrying about being judged. All of that happens before you even talk.
+    </p>
+    <p className="text-base md:text-lg mb-4">
+      <em>Insight:</em> This wasn&apos;t about building a therapist replacement. It was about building a
+      friction-free entry point to emotional processing.
+    </p>
+    <SectionLabel>04 — Design Iterations</SectionLabel>
+    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+      From text bot to empathetic voice
+    </h2>
+    <p className="text-base md:text-lg mb-4">
+      <strong>Version 1:</strong> Text-based chatbot. Felt &quot;cold and impersonal.&quot; Users wanted to hear a voice.
+    </p>
+    <p className="text-base md:text-lg mb-4">
+      <strong>Version 2:</strong> Voice call with speech-to-text. More human, but robotic TTS voice.
+    </p>
+    <p className="text-base md:text-lg mb-4">
+      <strong>Version 3:</strong> Empathetic system prompt + better voice model. Game changer.
+      Rewrote prompts to validate first: &quot;That sounds really hard. Tell me more.&quot; Added natural pauses.
+    </p>
+    <SectionLabel>05 — Final Feature Set</SectionLabel>
+    <FeatureGrid
+      features={[
+        {
+          icon: "📞",
+          title: "Voice Interface",
+          description: "Call in anytime. No appointment friction. AI answers immediately.",
+        },
+        {
+          icon: "🧠",
+          title: "Empathetic AI",
+          description: "System prompt built around validation, curiosity, non-judgment.",
+        },
+        {
+          icon: "🧘",
+          title: "Stress Toolkit",
+          description: "4-7-8 breathing, grounding exercises offered when anxiety detected.",
+        },
+        {
+          icon: "📝",
+          title: "Session Summaries",
+          description: "Private text summary after each call. Encrypted. Only user sees it.",
+        },
+      ]}
+    />
+    <SectionLabel>06 — Lessons</SectionLabel>
+  </>
+);
+
+const serenelyStats = [
+  { number: "50+", label: "Active users in pilot" },
+  { number: "70%", label: "Signups used at least once" },
+  { number: "40%", label: "Used weekly" },
+];
+
+const serenelyFeatures = [
+  { icon: "📞", title: "Voice Interface", description: "Call anytime, no appointment needed." },
+  { icon: "🧠", title: "Empathetic AI", description: "Validation-first, not advice-first." },
+  { icon: "🧘", title: "Stress Toolkit", description: "Breathing exercises on demand." },
+  { icon: "📝", title: "Session Summaries", description: "Private, encrypted summaries." },
+];
+
+const serenelyLessons = [
+  { number: 1, title: "Tone of voice matters more than features", description: "Same tech, completely different feeling with empathetic prompts." },
+  { number: 2, title: "You don't need to be a therapist", description: "Led with empathy and iteration, not expertise." },
+  { number: 3, title: "Privacy is a requirement, not a feature", description: "Encryption and secure handling built in from day one." },
+  { number: 4, title: "Low-friction entry beats comprehensive features", description: "One thing: call right now and talk." },
+];
+
+const serenelyOutcome = "50+ active users. 70% engagement. Key insight: technology doesn't solve mental health — empathy does.";
+
 export default function Home() {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
+  const handleToggle = (index: number) => {
+    setExpandedCard(expandedCard === index ? null : index);
+  };
+
   return (
     <main className="min-h-screen bg-primary relative">
       <InteractiveDots dotColor="#3D3D9E" spacing={50} backgroundOpacity={0.1} />
-      <Navigation />
+      <VerticalDialNav />
       <Hero />
 
       <About />
 
       <section id="projects" className="px-6 py-24">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
+            className="mb-12"
           >
             <span className="text-xs uppercase tracking-widest text-indigo font-semibold mb-4 block">
               Selected Work
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl mb-12">
+            <h2 className="font-serif text-4xl md:text-5xl">
               Featured Project Case Studies
             </h2>
           </motion.div>
 
-          <CaseStudyCard
-            index={0}
-            data={{
-              id: "clutterless",
-              title: "Clutterless",
-              meta: "AI-powered academic email management • HCI Capstone",
-              role: "Product Manager & Designer",
-              teamSize: "5 people, 8 weeks",
-              tools: "Figma, Miro, User Testing",
-              context: "LUMS HCI Capstone",
-              content: clutterlessSections,
-              stats: clutterlessStats,
-              features: clutterlessFeatures,
-              lessons: clutterlessLessons,
-              outcome: clutterlessOutcome,
-              link: "https://www.figma.com/proto/fZlHc4EQAx3jYHovTUVEU7/Clutterless--Copy-?node-id=2016-1947&t=gNbic8dqG8mLq9Cw-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2016%3A1947",
-            }}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CaseStudyCard
+              index={0}
+              isExpanded={expandedCard === 0}
+              onToggle={() => handleToggle(0)}
+              data={{
+                id: "clutterless",
+                title: "Clutterless",
+                meta: "AI-powered academic email management • HCI Capstone",
+                role: "Product Manager & Designer",
+                teamSize: "5 people, 8 weeks",
+                tools: "Figma, Miro, User Testing",
+                context: "LUMS HCI Capstone",
+                content: clutterlessSections,
+                stats: clutterlessStats,
+                features: clutterlessFeatures,
+                lessons: clutterlessLessons,
+                outcome: clutterlessOutcome,
+                link: "https://www.figma.com/proto/fZlHc4EQAx3jYHovTUVEU7/Clutterless--Copy-?node-id=2016-1947&t=gNbic8dqG8mLq9Cw-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2016%3A1947",
+              }}
+            />
 
-          <CaseStudyCard
-            index={1}
-            data={{
-              id: "tradeup",
-              title: "TradeUp",
-              meta: "PSX mock trading platform • Full-stack",
-              role: "Full Stack Engineer + PM",
-              teamSize: "Solo, shipped in production",
-              tools: "React, Node.js, PostgreSQL, AWS",
-              users: "100+ active traders",
-              content: tradeupSections,
-              stats: tradeupStats,
-              lessons: tradeupLessons,
-              outcome: tradeupOutcome,
-              link: "https://github.com/Um3rz/TradeUp",
-            }}
-          />
+            <CaseStudyCard
+              index={1}
+              isExpanded={expandedCard === 1}
+              onToggle={() => handleToggle(1)}
+              data={{
+                id: "tradeup",
+                title: "TradeUp",
+                meta: "PSX mock trading platform • Full-stack",
+                role: "Full Stack Engineer + PM",
+                teamSize: "Solo, shipped in production",
+                tools: "React, Node.js, PostgreSQL, AWS",
+                users: "100+ active traders",
+                content: tradeupSections,
+                stats: tradeupStats,
+                lessons: tradeupLessons,
+                outcome: tradeupOutcome,
+                link: "https://github.com/Um3rz/TradeUp",
+              }}
+            />
 
-          <CaseStudyCard
-            index={2}
-            data={{
-              id: "sentinel",
-              title: "The Sentinel",
-              meta: "Autonomous QA agent • Gemini Hackathon",
-              role: "Product & Engineer",
-              teamSize: "Solo entry",
-              tools: "Gemini, FastAPI, Playwright",
-              problemSpace: "Visual regression testing",
-              content: sentinelSections,
-              stats: sentinelStats,
-              lessons: sentinelLessons,
-              outcome: sentinelOutcome,
-              link: "https://github.com/Um3rz/the-Sentinel",
-            }}
-          />
+            <CaseStudyCard
+              index={2}
+              isExpanded={expandedCard === 2}
+              onToggle={() => handleToggle(2)}
+              data={{
+                id: "sentinel",
+                title: "The Sentinel",
+                meta: "Autonomous QA agent • Gemini Hackathon",
+                role: "Product & Engineer",
+                teamSize: "Solo entry",
+                tools: "Gemini, FastAPI, Playwright",
+                problemSpace: "Visual regression testing",
+                content: sentinelSections,
+                stats: sentinelStats,
+                lessons: sentinelLessons,
+                outcome: sentinelOutcome,
+                link: "https://github.com/Um3rz/the-Sentinel",
+              }}
+            />
+
+            <CaseStudyCard
+              index={3}
+              isExpanded={expandedCard === 3}
+              onToggle={() => handleToggle(3)}
+              data={{
+                id: "serenely",
+                title: "Serenely",
+                meta: "AI voice therapy companion • Software Engineering Capstone",
+                role: "Product Manager & Technical Lead",
+                teamSize: "5 engineers, 3-month sprint",
+                tools: "FastAPI, React, OpenAI API, PostgreSQL, Twilio",
+                users: "50+ active during pilot",
+                context: "LUMS Software Engineering Capstone",
+                content: serenelySections,
+                stats: serenelyStats,
+                features: serenelyFeatures,
+                lessons: serenelyLessons,
+                outcome: serenelyOutcome,
+                link: "https://github.com/Um3rz/serenely"
+              }}
+            />
+          </div>
         </div>
       </section>
 

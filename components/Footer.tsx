@@ -26,7 +26,7 @@ export default function CTAStrip() {
 
 export function Footer() {
   return (
-    <footer className="px-8 py-10 text-center text-xs text-muted border-b-2 border-theme">
+    <footer id="footer" className="px-8 py-10 text-center text-xs text-muted border-b-2 border-theme">
       <p>
         Umar Zubair • AI Product Manager •{" "}
         <a

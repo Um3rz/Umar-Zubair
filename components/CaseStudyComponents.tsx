@@ -65,9 +65,9 @@ export function FeatureGrid({ features }: FeatureGridProps) {
       {features.map((feature, idx) => (
         <div
           key={idx}
-          className="p-5 border-2 border-theme bg-secondary opacity-90"
+          className="p-4 md:p-5 border-2 border-theme bg-secondary opacity-90"
         >
-          <div className="text-2xl mb-3">{feature.icon}</div>
+          <div className="text-lg md:text-2xl mb-3">{feature.icon}</div>
           <h4 className="text-base font-semibold mb-3">
             {feature.title}
           </h4>
@@ -99,7 +99,7 @@ export function LessonList({ lessons }: LessonListProps) {
           className={`flex gap-6 py-8 ${idx < lessons.length - 1 ? "border-b border-theme" : ""
             }`}
         >
-          <div className="font-serif text-2xl text-indigo flex-shrink-0">
+          <div className="font-serif text-xl md:text-2xl text-indigo flex-shrink-0">
             {lesson.number}
           </div>
           <div>

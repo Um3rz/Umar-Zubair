@@ -12,11 +12,7 @@ const skills = [
   "React",
   "Data Analysis",
   "Technical Writing",
-  "MVP Development",
-  "AWS",
-  "Docker",
-  "Spring Boot",
-  "NestJS",
+  "MVP Development"
 ];
 
 const tools = [
@@ -81,7 +77,7 @@ export default function About() {
                 About Me
               </span>
               <h2 className="font-serif text-4xl mb-6 leading-tight">
-                I&apos;m Umar Zubair — an AI Product Manager who bridges{" "}
+                I&apos;m Umar an AI Product Manager who bridges{" "}
                 <em className="text-indigo italic">technology</em> and{" "}
                 <em className="text-indigo italic">human needs</em>.
               </h2>
