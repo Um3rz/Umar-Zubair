@@ -7,11 +7,10 @@ export default function CTAStrip() {
     <div className="bg-secondary px-8 py-16 flex flex-col md:flex-row justify-between items-center gap-10 border-t-2 border-theme border-b-2">
       <div>
         <h2 className="font-serif text-2xl mb-2">
-          Let&apos;s talk about building products.
+          Let&apos;s talk!
         </h2>
         <p className="text-sm text-muted">
-          I&apos;m open to AI PM, FDE, and Product roles. Based in Riyadh, open to
-          European markets.
+          I&apos;m open to AI PM, FDE, and Product roles.
         </p>
       </div>
       <Link
