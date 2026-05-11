@@ -161,7 +161,7 @@ const tradeupLessons = [
   { number: 3, title: "Products need a story", description: "This is how real trading works." },
 ];
 
-const tradeupOutcome = "Production platform with 100+ users. Proved you don't need VC funding to ship.";
+const tradeupOutcome = "Production platform tested with 50+ users.";
 
 const sentinelSections = (
   <>

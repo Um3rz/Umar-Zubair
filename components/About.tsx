@@ -77,13 +77,13 @@ export default function About() {
                 About Me
               </span>
               <h2 className="font-serif text-4xl mb-6 leading-tight">
-                I&apos;m Umar an AI Product Manager who bridges{" "}
+                Hi, I&apos;m Umar an AI Product Manager who bridges{" "}
                 <em className="text-indigo italic">technology</em> and{" "}
                 <em className="text-indigo italic">human needs</em>.
               </h2>
               <p className="text-lg leading-relaxed mb-6">
                 Currently based in Riyadh, I specialize in building products at the
-                intersection of AI, infrastructure, and user research. My approach
+                intersection of AI, infrastructure, and User Research. My approach
                 combines data-driven decision making with deep empathy for end users.
               </p>
               <p className="text-lg leading-relaxed mb-8">I believe the best products
@@ -115,7 +115,7 @@ export default function About() {
             {/* Tools */}
             <div className="mb-8">
               <h3 className="text-sm uppercase tracking-widest font-semibold mb-4">
-                Tools I Use
+                Tools & Technologies
               </h3>
               <div className="flex flex-wrap gap-4">
                 {tools.map((tool, idx) => (
