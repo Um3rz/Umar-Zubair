@@ -2,13 +2,18 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown } from "lucide-react";
 
 const fullText = "Building the right thing, then building it right.";
 
 type Phase = "typing" | "waiting" | "deleting";
 
-export default function Hero() {
+interface HeroProps {
+  className?: string;
+  onLearnMore?: () => void;
+  onViewWork?: () => void;
+}
+
+export default function Hero({ className = "", onLearnMore, onViewWork }: HeroProps) {
   const [displayText, setDisplayText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
   const phaseRef = useRef<Phase>("typing");
@@ -54,24 +59,9 @@ export default function Hero() {
     return () => clearInterval(cursorInterval);
   }, []);
 
-  useEffect(() => {
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 500);
-    return () => clearInterval(cursorInterval);
-  }, []);
-
-  const scrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const scrollToAbout = () => {
-    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden">
-      <div className="max-w-4xl mx-auto text-center z-10">
+    <div id="hero" className={`relative flex flex-col justify-center p-8 bg-indigo/10 border-2 border-indigo overflow-hidden ${className}`}>
+      <div className="z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,7 +76,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] mb-6"
+          className="font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.1] mb-6"
         >
           {displayText}
           <motion.span
@@ -99,38 +89,25 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="text-lg md:text-xl mb-10 leading-relaxed"
+          className="text-base md:text-lg mb-8 leading-relaxed max-w-lg"
         >
           Specializing in AI and User-Centered Design.
-          <br className="hidden md:block" />
-          {" "}
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4"
         >
-          <button onClick={scrollToProjects} className="btn-primary text-base px-8 py-4">
+          <button onClick={onViewWork} className="btn-primary text-sm px-6 py-3">
             View My Work
           </button>
-          <button onClick={scrollToAbout} className="btn-secondary text-base px-8 py-4">
+          <button onClick={onLearnMore} className="btn-secondary text-sm px-6 py-3">
             Learn More
           </button>
         </motion.div>
       </div>
-
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.8 }}
-        onClick={scrollToAbout}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hover:text-indigo transition-colors cursor-pointer"
-        aria-label="Scroll down"
-      >
-        <ChevronDown size={28} strokeWidth={1.5} />
-      </motion.button>
-    </section>
+    </div>
   );
 }

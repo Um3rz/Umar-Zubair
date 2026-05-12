@@ -2,7 +2,19 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import VerticalDialNav from "@/components/VerticalDialNav";
+import { 
+  BellOff, 
+  Inbox, 
+  Calendar, 
+  Map, 
+  Phone, 
+  Brain, 
+  Activity, 
+  FileText 
+} from "lucide-react";
+
+import TopNav from "@/components/TopNav";
+import Loader from "@/components/Loader";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import CaseStudyCard from "@/components/CaseStudyCard";
@@ -64,22 +76,22 @@ const clutterlessSections = (
     <FeatureGrid
       features={[
         {
-          icon: "🔕",
+          icon: <BellOff size={28} />,
           title: "Frictionless Onboarding",
           description: "Login with Outlook. Mute top 3 bad senders in one screen. AI learns from day one.",
         },
         {
-          icon: "📬",
+          icon: <Inbox size={28} />,
           title: "Today Inbox",
           description: "Only today&apos;s emails. Swipe left to purge, right to pin. Fast triage.",
         },
         {
-          icon: "📅",
+          icon: <Calendar size={28} />,
           title: "Intelligent Calendar",
           description: "Pulls schedules from LMS. Detects dates inside emails.",
         },
         {
-          icon: "🗺️",
+          icon: <Map size={28} />,
           title: "Ambient Awareness",
           description: "Daily Digest + Bulletin Board. Discovery without inbox noise.",
         },
@@ -96,10 +108,10 @@ const clutterlessStats = [
 ];
 
 const clutterlessFeatures = [
-  { icon: "🔕", title: "Frictionless Onboarding", description: "Login with Outlook. Mute top 3 bad senders." },
-  { icon: "📬", title: "Today Inbox", description: "Only today&apos;s emails. Fast triage." },
-  { icon: "📅", title: "Intelligent Calendar", description: "Pulls schedules from LMS." },
-  { icon: "🗺️", title: "Ambient Awareness", description: "Daily Digest + Bulletin Board." },
+  { icon: <BellOff size={24} />, title: "Frictionless Onboarding", description: "Login with Outlook. Mute top 3 bad senders." },
+  { icon: <Inbox size={24} />, title: "Today Inbox", description: "Only today&apos;s emails. Fast triage." },
+  { icon: <Calendar size={24} />, title: "Intelligent Calendar", description: "Pulls schedules from LMS." },
+  { icon: <Map size={24} />, title: "Ambient Awareness", description: "Daily Digest + Bulletin Board." },
 ];
 
 const clutterlessLessons = [
@@ -282,22 +294,22 @@ const serenelySections = (
     <FeatureGrid
       features={[
         {
-          icon: "📞",
+          icon: <Phone size={28} />,
           title: "Voice Interface",
           description: "Call in anytime. No appointment friction. AI answers immediately.",
         },
         {
-          icon: "🧠",
+          icon: <Brain size={28} />,
           title: "Empathetic AI",
           description: "System prompt built around validation, curiosity, non-judgment.",
         },
         {
-          icon: "🧘",
+          icon: <Activity size={28} />,
           title: "Stress Toolkit",
           description: "4-7-8 breathing, grounding exercises offered when anxiety detected.",
         },
         {
-          icon: "📝",
+          icon: <FileText size={28} />,
           title: "Session Summaries",
           description: "Private text summary after each call. Encrypted. Only user sees it.",
         },
@@ -314,10 +326,10 @@ const serenelyStats = [
 ];
 
 const serenelyFeatures = [
-  { icon: "📞", title: "Voice Interface", description: "Call anytime, no appointment needed." },
-  { icon: "🧠", title: "Empathetic AI", description: "Validation-first, not advice-first." },
-  { icon: "🧘", title: "Stress Toolkit", description: "Breathing exercises on demand." },
-  { icon: "📝", title: "Session Summaries", description: "Private, encrypted summaries." },
+  { icon: <Phone size={24} />, title: "Voice Interface", description: "Call anytime, no appointment needed." },
+  { icon: <Brain size={24} />, title: "Empathetic AI", description: "Validation-first, not advice-first." },
+  { icon: <Activity size={24} />, title: "Stress Toolkit", description: "Breathing exercises on demand." },
+  { icon: <FileText size={24} />, title: "Session Summaries", description: "Private, encrypted summaries." },
 ];
 
 const serenelyLessons = [
@@ -330,128 +342,155 @@ const serenelyLessons = [
 const serenelyOutcome = "50+ active users. 70% engagement. Key insight: technology doesn't solve mental health — empathy does.";
 
 export default function Home() {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const [expandedCard, setExpandedCard] = useState<number | string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleToggle = (index: number) => {
-    setExpandedCard(expandedCard === index ? null : index);
+  const handleToggle = (id: number | string) => {
+    setExpandedCard(expandedCard === id ? null : id);
+  };
+
+  const scrollToProjects = () => {
+    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <main className="min-h-screen bg-primary relative">
-      <InteractiveDots dotColor="#3D3D9E" spacing={50} backgroundOpacity={0.1} />
-      <VerticalDialNav />
-      <Hero />
+    <>
+      <Loader onLoadComplete={() => setIsLoaded(true)} />
+      
+      {isLoaded && (
+        <motion.main 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="min-h-screen bg-primary relative pt-24"
+        >
+          <InteractiveDots dotColor="#3D3D9E" spacing={50} backgroundOpacity={0.1} />
+          <TopNav />
 
-      <About />
+          <section id="projects" className="px-4 md:px-8 pb-24">
+            <div className="max-w-[1400px] mx-auto">
+              
+              {/* Main Bento Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-min">
+                
+                {/* Hero Tile */}
+                <Hero 
+                  className="col-span-1 md:col-span-2 lg:col-span-2 row-span-2 shadow-neoLg rounded-xl" 
+                  onLearnMore={() => setExpandedCard('about')}
+                  onViewWork={scrollToProjects}
+                />
+                
+                {/* About Tile */}
+                <About 
+                  className="col-span-1 md:col-span-1 lg:col-span-2 row-span-2 shadow-neo rounded-xl" 
+                  isExpanded={expandedCard === 'about'}
+                  onToggle={() => handleToggle('about')}
+                />
 
-      <section id="projects" className="px-6 py-24">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <span className="text-xs uppercase tracking-widest text-indigo font-semibold mb-4 block">
-              Selected Work
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl">
-              Featured Project Case Studies
-            </h2>
-          </motion.div>
+                {/* Case Study 1 - Serenely (Featured) */}
+                <CaseStudyCard
+                  index={3}
+                  isExpanded={expandedCard === 3}
+                  onToggle={() => handleToggle(3)}
+                  colSpan="col-span-1 md:col-span-2 lg:col-span-2"
+                  rowSpan="row-span-1 md:row-span-2 rounded-xl shadow-neo"
+                  data={{
+                    id: "serenely",
+                    title: "Serenely",
+                    meta: "AI voice therapy companion",
+                    role: "Product Manager & Technical Lead",
+                    teamSize: "5 engineers, 3-month sprint",
+                    tools: "FastAPI, React, OpenAI API, PostgreSQL, Twilio",
+                    users: "50+ active during pilot",
+                    context: "LUMS Software Engineering Capstone",
+                    content: serenelySections,
+                    stats: serenelyStats,
+                    features: serenelyFeatures,
+                    lessons: serenelyLessons,
+                    outcome: serenelyOutcome,
+                    link: "https://github.com/Um3rz/serenely"
+                  }}
+                />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <CaseStudyCard
-              index={0}
-              isExpanded={expandedCard === 0}
-              onToggle={() => handleToggle(0)}
-              data={{
-                id: "clutterless",
-                title: "Clutterless",
-                meta: "AI-powered academic email management • HCI Capstone",
-                role: "Product Manager & Designer",
-                teamSize: "5 people, 8 weeks",
-                tools: "Figma, Miro, User Testing",
-                context: "LUMS HCI Capstone",
-                content: clutterlessSections,
-                stats: clutterlessStats,
-                features: clutterlessFeatures,
-                lessons: clutterlessLessons,
-                outcome: clutterlessOutcome,
-                link: "https://www.figma.com/proto/fZlHc4EQAx3jYHovTUVEU7/Clutterless--Copy-?node-id=2016-1947&t=gNbic8dqG8mLq9Cw-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2016%3A1947",
-              }}
-            />
+                {/* Case Study 2 - Clutterless */}
+                <CaseStudyCard
+                  index={0}
+                  isExpanded={expandedCard === 0}
+                  onToggle={() => handleToggle(0)}
+                  colSpan="col-span-1 md:col-span-2 lg:col-span-2"
+                  rowSpan="row-span-1 rounded-xl shadow-neo"
+                  data={{
+                    id: "clutterless",
+                    title: "Clutterless",
+                    meta: "AI-powered academic email management",
+                    role: "Product Manager & Designer",
+                    teamSize: "5 people, 8 weeks",
+                    tools: "Figma, Miro, User Testing",
+                    context: "LUMS HCI Capstone",
+                    content: clutterlessSections,
+                    stats: clutterlessStats,
+                    features: clutterlessFeatures,
+                    lessons: clutterlessLessons,
+                    outcome: clutterlessOutcome,
+                    link: "https://www.figma.com/proto/fZlHc4EQAx3jYHovTUVEU7/Clutterless--Copy-?node-id=2016-1947&t=gNbic8dqG8mLq9Cw-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2016%3A1947",
+                  }}
+                />
 
-            <CaseStudyCard
-              index={1}
-              isExpanded={expandedCard === 1}
-              onToggle={() => handleToggle(1)}
-              data={{
-                id: "tradeup",
-                title: "TradeUp",
-                meta: "PSX mock trading platform • Full-stack",
-                role: "Full Stack Engineer + PM",
-                teamSize: "Solo, shipped in production",
-                tools: "React, Node.js, PostgreSQL, AWS",
-                users: "100+ active traders",
-                content: tradeupSections,
-                stats: tradeupStats,
-                lessons: tradeupLessons,
-                outcome: tradeupOutcome,
-                link: "https://github.com/Um3rz/TradeUp",
-              }}
-            />
+                {/* Case Study 3 - TradeUp */}
+                <CaseStudyCard
+                  index={1}
+                  isExpanded={expandedCard === 1}
+                  onToggle={() => handleToggle(1)}
+                  colSpan="col-span-1 md:col-span-1 lg:col-span-1"
+                  rowSpan="row-span-1 rounded-xl shadow-neo"
+                  data={{
+                    id: "tradeup",
+                    title: "TradeUp",
+                    meta: "PSX mock trading platform",
+                    role: "Full Stack Engineer + PM",
+                    teamSize: "Solo, shipped in production",
+                    tools: "React, Node.js, PostgreSQL, AWS",
+                    users: "100+ active traders",
+                    content: tradeupSections,
+                    stats: tradeupStats,
+                    lessons: tradeupLessons,
+                    outcome: tradeupOutcome,
+                    link: "https://github.com/Um3rz/TradeUp",
+                  }}
+                />
 
-            <CaseStudyCard
-              index={2}
-              isExpanded={expandedCard === 2}
-              onToggle={() => handleToggle(2)}
-              data={{
-                id: "sentinel",
-                title: "The Sentinel",
-                meta: "Autonomous QA agent • Gemini Hackathon",
-                role: "Product & Engineer",
-                teamSize: "Solo entry",
-                tools: "Gemini, FastAPI, Playwright",
-                problemSpace: "Visual regression testing",
-                content: sentinelSections,
-                stats: sentinelStats,
-                lessons: sentinelLessons,
-                outcome: sentinelOutcome,
-                link: "https://github.com/Um3rz/the-Sentinel",
-              }}
-            />
+                {/* Case Study 4 - Sentinel */}
+                <CaseStudyCard
+                  index={2}
+                  isExpanded={expandedCard === 2}
+                  onToggle={() => handleToggle(2)}
+                  colSpan="col-span-1 md:col-span-1 lg:col-span-1"
+                  rowSpan="row-span-1 rounded-xl shadow-neo"
+                  data={{
+                    id: "sentinel",
+                    title: "The Sentinel",
+                    meta: "Autonomous QA agent",
+                    role: "Product & Engineer",
+                    teamSize: "Solo entry",
+                    tools: "Gemini, FastAPI, Playwright",
+                    problemSpace: "Visual regression testing",
+                    content: sentinelSections,
+                    stats: sentinelStats,
+                    lessons: sentinelLessons,
+                    outcome: sentinelOutcome,
+                    link: "https://github.com/Um3rz/the-Sentinel",
+                  }}
+                />
+              </div>
+            </div>
+          </section>
 
-            <CaseStudyCard
-              index={3}
-              isExpanded={expandedCard === 3}
-              onToggle={() => handleToggle(3)}
-              data={{
-                id: "serenely",
-                title: "Serenely",
-                meta: "AI voice therapy companion • Software Engineering Capstone",
-                role: "Product Manager & Technical Lead",
-                teamSize: "5 engineers, 3-month sprint",
-                tools: "FastAPI, React, OpenAI API, PostgreSQL, Twilio",
-                users: "50+ active during pilot",
-                context: "LUMS Software Engineering Capstone",
-                content: serenelySections,
-                stats: serenelyStats,
-                features: serenelyFeatures,
-                lessons: serenelyLessons,
-                outcome: serenelyOutcome,
-                link: "https://github.com/Um3rz/serenely"
-              }}
-            />
-          </div>
-        </div>
-      </section>
+          <div className="h-px bg-border mx-6 my-12"></div>
 
-      <div className="h-px bg-border mx-6 my-12"></div>
-
-      <CTAStrip />
-      <Footer />
-    </main>
+          <CTAStrip />
+          <Footer />
+        </motion.main>
+      )}
+    </>
   );
 }

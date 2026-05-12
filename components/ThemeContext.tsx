@@ -19,7 +19,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem("theme") as Theme;
-    if (saved) setTheme(saved);
+    if (saved) {
+      setTheme(saved);
+    } else if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
   }, []);
 
   useEffect(() => {
