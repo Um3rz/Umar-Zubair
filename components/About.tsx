@@ -15,7 +15,18 @@ import {
   Leaf, 
   Cat,
   X,
-  ChevronRight
+  ChevronRight,
+  Coffee,
+  FileCode2,
+  Ship,
+  Bot,
+  Cpu,
+  Database,
+  Globe,
+  Link,
+  Users,
+  MessageSquare,
+  CheckSquare
 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -27,20 +38,58 @@ const skills = [
   "React",
   "Data Analysis",
   "Technical Writing",
-  "MVP Development"
+  "MVP Development",
+  "UX-Research"
 ];
 
 const tools = [
   { name: "Figma", icon: <Palette size={20} /> },
   { name: "Miro", icon: <ClipboardList size={20} /> },
   { name: "Notion", icon: <PenTool size={20} /> },
+  { name: "Slack", icon: <MessageSquare size={20} /> },
+  { name: "Jira", icon: <CheckSquare size={20} /> },
   { name: "Google Analytics", icon: <BarChart size={20} /> },
   { name: "Python", icon: <Terminal size={20} /> },
-  { name: "React", icon: <Code2 size={20} /> },
+  { name: "Java", icon: <Coffee size={20} /> },
+  { name: "TypeScript", icon: <FileCode2 size={20} /> },
+  { name: "C++", icon: <Code2 size={20} /> },
+  { name: "ReactJS", icon: <Code2 size={20} /> },
+  { name: "NextJS", icon: <Globe size={20} /> },
   { name: "AWS", icon: <Cloud size={20} /> },
   { name: "Docker", icon: <Container size={20} /> },
+  { name: "Kubernetes", icon: <Ship size={20} /> },
+  { name: "Claude Code", icon: <Bot size={20} /> },
+  { name: "MCP", icon: <Cpu size={20} /> },
   { name: "Spring Boot", icon: <Leaf size={20} /> },
   { name: "NestJS", icon: <Cat size={20} /> },
+  { name: "PostgreSQL", icon: <Database size={20} /> },
+  { name: "MongoDB", icon: <Database size={20} /> },
+  { name: "Langchain", icon: <Link size={20} /> },
+  { name: "CrewAI", icon: <Users size={20} /> },
+];
+
+const experiences = [
+  {
+    role: "AI Product Management Intern",
+    company: "Axon Build",
+    date: "June 2025 \u2013 July 2025",
+    location: "Remote",
+    points: [
+      "Took full ownership of an AI-powered Shopify support bot from PRD to production: wrote the spec, ran stakeholder reviews, and shipped a solution that cut customer query resolution time by 25%.",
+      "Prototyped an AI News Curator using OpenAI-Agent SDK; iterated on agent architecture through three build\u2013measure\u2013learn cycles until feed relevance improved 25% and content delivery latency dropped 35%.",
+      "Used Claude Code for AI-assisted debugging and codebase navigation across the full stack; managed Docker and AWS deployment to maintain 99% uptime in a production environment."
+    ]
+  },
+  {
+    role: "FullStack Engineer Intern",
+    company: "The Locate",
+    date: "May 2024 \u2013 June 2024",
+    location: "Remote",
+    points: [
+      "Shipped UI/UX improvements and full-stack features on a live B2B marketplace platform (MVP) supporting 100+ active users; worked directly with the product team to scope and prioritize each sprint.",
+      "Improved system reliability through database query optimization and frontend performance fixes on a production codebase built with React, Node.js, and PostgreSQL."
+    ]
+  }
 ];
 
 const certifications = [
@@ -112,15 +161,32 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
           </div>
 
           {/* Bio */}
-          <div className="flex-1">
+          <div>
             <p className="text-sm md:text-base leading-relaxed mb-4">
               Currently based in Riyadh, I specialize in building products at the
               intersection of AI, infrastructure, and User Research. My approach
               combines data-driven decision making with deep empathy for end users.
             </p>
-            <p className="text-sm md:text-base leading-relaxed">
-              I believe the best products solve real problems while feeling effortless to use.
-            </p>
+          </div>
+
+          {/* Experience Preview */}
+          <div className="flex-1">
+            <h3 className="text-xs uppercase tracking-widest font-semibold mb-3">
+              Recent Experience
+            </h3>
+            <div className="flex flex-col gap-3">
+              {experiences.slice(0, 2).map((exp, idx) => (
+                <div key={idx} className="flex justify-between items-center border-l-2 border-theme pl-3">
+                  <div>
+                    <span className="text-sm font-semibold block">{exp.role}</span>
+                    <span className="text-xs opacity-80">{exp.company}</span>
+                  </div>
+                  <span className="text-xs opacity-60 font-mono text-right hidden sm:block">
+                    {exp.date}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Skills Tags */}
@@ -221,6 +287,31 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                       Whether it's creating an autonomous QA agent or designing a frictionless email manager 
                       for students, I thrive on turning complex technical challenges into intuitive user experiences.
                     </p>
+                  </div>
+                </section>
+
+                <section>
+                  <h3 className="text-sm uppercase tracking-widest font-semibold mb-4 text-indigo">
+                    Experience
+                  </h3>
+                  <div className="flex flex-col gap-8">
+                    {experiences.map((exp, idx) => (
+                      <div key={idx} className="flex flex-col md:flex-row gap-4 md:gap-8">
+                        <div className="md:w-1/3 flex-shrink-0">
+                          <h4 className="font-semibold text-lg">{exp.role}</h4>
+                          <p className="text-primary/80">{exp.company}</p>
+                          <p className="text-sm text-muted mt-1">{exp.date}</p>
+                          <p className="text-sm text-muted">{exp.location}</p>
+                        </div>
+                        <div className="md:w-2/3">
+                          <ul className="list-disc ml-5 space-y-2 text-base md:text-lg">
+                            {exp.points.map((point, i) => (
+                              <li key={i}>{point}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </section>
 
