@@ -3,16 +3,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import profilePhoto from "./profile-photo.png";
 import ThreeBackground from "./ThreeBackground";
-import { 
-  Palette, 
-  ClipboardList, 
-  PenTool, 
-  BarChart, 
-  Terminal, 
-  Code2, 
-  Cloud, 
-  Container, 
-  Leaf, 
+import {
+  Palette,
+  ClipboardList,
+  PenTool,
+  BarChart,
+  Terminal,
+  Code2,
+  Cloud,
+  Container,
+  Leaf,
   Cat,
   X,
   ChevronRight,
@@ -70,7 +70,7 @@ const tools = [
 
 const experiences = [
   {
-    role: "AI Product Management Intern",
+    role: "AI Product Manager Intern",
     company: "Axon Build",
     date: "June 2025 \u2013 July 2025",
     location: "Remote",
@@ -81,7 +81,7 @@ const experiences = [
     ]
   },
   {
-    role: "FullStack Engineer Intern",
+    role: "FullStack AI Engineer Intern",
     company: "The Locate",
     date: "May 2024 \u2013 June 2024",
     location: "Remote",
@@ -130,13 +130,13 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
 
   return (
     <>
-      <div 
-        id="about" 
+      <div
+        id="about"
         onClick={onToggle}
         className={`flex flex-col border-2 border-theme bg-secondary/50 p-6 md:p-8 overflow-hidden relative cursor-pointer group ${className}`}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0" />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -155,7 +155,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                 <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0" />
               </span>
               <h2 className="font-serif text-2xl md:text-3xl leading-tight">
-                AI Product Manager
+                Product Engineer | Technical PM
               </h2>
             </div>
           </div>
@@ -163,7 +163,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
           {/* Bio */}
           <div>
             <p className="text-sm md:text-base leading-relaxed mb-4">
-              Currently based in Riyadh, I specialize in building products at the
+              Hi I'm Umar, currently based in Riyadh. I specialize in building products at the
               intersection of AI, infrastructure, and User Research. My approach
               combines data-driven decision making with deep empathy for end users.
             </p>
@@ -261,7 +261,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                     <p className="text-sm text-muted mt-1">AI Product Manager</p>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={onToggle}
                   className="p-2 hover:bg-secondary rounded-full transition-colors"
                 >
@@ -271,7 +271,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
 
               {/* Content */}
               <div className="p-6 md:p-10 flex-1 space-y-12">
-                
+
                 <section>
                   <h3 className="text-sm uppercase tracking-widest font-semibold mb-4 text-indigo">
                     The Story
@@ -283,8 +283,8 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                       combines data-driven decision making with deep empathy for end users.
                     </p>
                     <p>
-                      I believe the best products solve real problems while feeling effortless to use. 
-                      Whether it's creating an autonomous QA agent or designing a frictionless email manager 
+                      I believe the best products solve real problems while feeling effortless to use.
+                      Whether it's creating an autonomous QA agent or designing a frictionless email manager
                       for students, I thrive on turning complex technical challenges into intuitive user experiences.
                     </p>
                   </div>

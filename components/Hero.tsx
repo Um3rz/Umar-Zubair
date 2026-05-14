@@ -68,7 +68,7 @@ export default function Hero({ className = "", onLearnMore, onViewWork }: HeroPr
           transition={{ duration: 0.8 }}
         >
           <span className="text-xs uppercase font-semibold tracking-[0.2em] text-indigo mb-4 block">
-            AI Product Manager
+            Product Engineer | Technical PM
           </span>
         </motion.div>
 
