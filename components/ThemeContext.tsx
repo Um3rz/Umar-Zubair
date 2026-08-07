@@ -13,37 +13,23 @@ interface ThemeContextType {
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem("theme") as Theme;
-    if (saved) {
-      setTheme(saved);
-    } else if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
+    // The inline script in layout.tsx already resolved the theme and applied it
+    // before paint. Read it back rather than recomputing and risking disagreement.
+    setTheme(document.documentElement.classList.contains("dark") ? "dark" : "light");
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
-    
+
     const root = document.documentElement;
     root.classList.remove("dark", "light");
     root.classList.add(theme);
     localStorage.setItem("theme", theme);
-    
-    // Also set inline styles for body
-    if (theme === "dark") {
-      document.body.style.backgroundColor = "#111118";
-      document.body.style.color = "#F5F5F7";
-    } else {
-      document.body.style.backgroundColor = "#FFFFFF";
-      document.body.style.color = "#111118";
-    }
   }, [theme, mounted]);
 
   const toggleTheme = () => {

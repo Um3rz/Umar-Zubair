@@ -1,92 +1,178 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Archivo+Expanded:wght@700;800;900&family=Azeret+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-serif: 'DM Serif Display', serif;
-  --font-sans: 'DM Sans', sans-serif;
+  --font-sans: 'Archivo', sans-serif;
+  --font-display: 'Archivo Expanded', sans-serif;
+  --font-mono: 'Azeret Mono', monospace;
+
+  /* Light is the default rendition of the sheet — bare :root, not a class.
+     Dark below is a negative print of the same document, not a second palette. */
+  --paper: #F3F1E9;
+  --paper-2: #E7E4D8;
+  --ink: #13160F;
+  --ink-2: #5A6152;
+  /* Bento borders are load-bearing ink, not a faint rule — every border-theme
+     usage across the app rides this token, so this one change is what makes
+     the whole site read as thick-black-bordered blocks instead of hairlines. */
+  --rule: var(--ink);
+
+  /* The field and the text are separate tokens on purpose: the outgoing system's
+     contrast bug came from using one fill color on both background and text.
+     --signal-field never belongs on a `color` property. */
+  --signal-field: #1CA35E;
+  --signal-field-hover: #16874C;
+  --signal-text: #0E6B3D;
+  --on-signal: #0B0D09;
+
+  --limit-field: #D6470F;
+  --limit-text: #A6350A;
+  --on-limit: #FFFFFF;
+
+  --row-wash: rgba(28, 163, 94, 0.08);
+}
+
+html.dark {
+  --paper: #101310;
+  --paper-2: #1A1E19;
+  --ink: #E8EAE4;
+  --ink-2: #9AA394;
+  --rule: var(--ink);
+
+  --signal-field: #1CA35E;
+  --signal-field-hover: #22B86A;
+  --signal-text: #3FD98A;
+  --on-signal: #0B0D09;
+
+  --limit-field: #D6470F;
+  --limit-text: #FF8A5B;
+  --on-limit: #0B0D09;
+
+  --row-wash: rgba(63, 217, 138, 0.1);
 }
 
 html {
   scroll-behavior: smooth;
+  /* Clears the fixed header rail so anchored targets don't land underneath it. */
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+html,
+html body {
+  background-color: var(--paper);
+  color: var(--ink);
 }
 
 body {
   font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.75;
+  font-size: 16.5px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Dark theme default */
-html.dark {
-  --bg-primary: #111118;
-  --bg-secondary: #1A1A24;
-  --bg-card: #1A1A24;
-  --text-primary: #F5F5F7;
-  --text-secondary: #9CA3AF;
-  --text-muted: #9CA3AF;
-  --border-color: #374151;
-}
-html.dark body,
-html.dark {
-  background-color: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
-}
+/* Theme-aware utility classes — same names the codebase already reads
+   everywhere, repointed at the datasheet token set. */
+.bg-primary { background-color: var(--paper); }
+.bg-secondary { background-color: var(--paper-2); }
+.bg-card { background-color: var(--paper-2); }
+.text-primary { color: var(--ink); }
+.text-secondary { color: var(--ink-2); }
+.text-muted { color: var(--ink-2); }
+.border-theme { border-color: var(--rule); }
+.bg-border { background-color: var(--rule); }
 
-/* Light theme */
-html.light {
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F8F9FA;
-  --bg-card: #FFFFFF;
-  --text-primary: #111118;
-  --text-secondary: #4B5563;
-  --text-muted: #6B7280;
-  --border-color: #E5E7EB;
-}
-html.light body,
-html.light {
-  background-color: var(--bg-primary) !important;
-  color: var(--text-primary) !important;
+.bg-primary\/40 { background-color: color-mix(in srgb, var(--paper) 40%, transparent); }
+.bg-primary\/90 { background-color: color-mix(in srgb, var(--paper) 90%, transparent); }
+
+/* Signal/limit fields are constant across themes, so Tailwind's generated
+   bg-signal/border-signal/bg-limit/border-limit (theme.extend.colors) are
+   already correct as-is. Only *text* diverges from the field value and by
+   theme, so these two are overridden here — this rule sits after
+   @tailwind utilities and wins on source order. */
+.text-signal { color: var(--signal-text); }
+.text-limit { color: var(--limit-text); }
+.bg-row-wash { background-color: var(--row-wash); }
+
+:focus-visible {
+  outline: 2px solid var(--signal-text);
+  outline-offset: 2px;
 }
 
-/* Component utility classes */
-.bg-primary { background-color: var(--bg-primary); }
-.bg-secondary { background-color: var(--bg-secondary); }
-.bg-card { background-color: var(--bg-card); }
-.text-primary { color: var(--text-primary); }
-.text-secondary { color: var(--text-secondary); }
-.text-muted { color: var(--text-muted); }
-.border-theme { border-color: var(--border-color); }
-
-/* Legacy color mappings */
-html.dark .bg-nearBlack { background-color: #111118 !important; }
-html.dark .bg-offWhite { background-color: #1A1A24 !important; }
-html.dark .text-nearBlack { color: #F5F5F7 !important; }
-html.dark .text-midGray { color: #9CA3AF !important; }
-html.dark .text-lightGray { color: #9CA3AF !important; }
-html.dark .border-nearBlack { border-color: #374151 !important; }
-html.dark .border-lightGray { border-color: #374151 !important; }
-html.dark .border-offWhite { border-color: #F5F5F7 !important; }
-
-html.light .bg-nearBlack { background-color: #FFFFFF !important; }
-html.light .bg-offWhite { background-color: #F8F9FA !important; }
-html.light .text-nearBlack { color: #111118 !important; }
-html.light .text-midGray { color: #4B5563 !important; }
-html.light .text-lightGray { color: #4B5563 !important; }
-html.light .border-nearBlack { border-color: #E5E7EB !important; }
-html.light .border-lightGray { border-color: #E5E7EB !important; }
-html.light .border-offWhite { border-color: #111118 !important; }
+/* The row a case study opens from morphs into its sheet instead of the two
+   crossfading; CaseStudyCard only calls startViewTransition when supported and
+   motion is allowed, so this timing never runs for a visitor who wouldn't see it. */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
 
 @layer components {
+  /* Filled control: the signal field with white reversed out of it, at 0
+     radius. Hover darkens the field — a pressed stamp, not a lift. */
   .btn-primary {
-    @apply bg-indigo text-white px-6 py-3 text-sm font-medium transition-all duration-150 ease-out hover:bg-indigo-light hover:-translate-y-0.5 shadow-neo hover:shadow-neoLg cursor-pointer border-none;
+    @apply px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-150 ease-out cursor-pointer border-none;
+    font-family: var(--font-mono);
+    background-color: var(--signal-field);
+    color: var(--on-signal);
   }
-  
+  .btn-primary:hover {
+    background-color: var(--signal-field-hover);
+  }
+
+  /* Outline control: hover inverts it, ink fills where the border was —
+     the print-registration gesture of the whole system. */
   .btn-secondary {
-    @apply bg-transparent text-indigo border-2 border-indigo px-6 py-3 text-sm font-medium transition-all duration-150 ease-out hover:bg-white hover:-translate-y-0.5 shadow-neo hover:shadow-neoLg cursor-pointer;
+    @apply bg-transparent border-2 px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-150 ease-out cursor-pointer;
+    font-family: var(--font-mono);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .btn-secondary:hover {
+    background-color: var(--ink);
+    color: var(--paper);
+  }
+
+  /* Reversed mono label bar. Every SECTION heading in the system is this. */
+  .section-bar {
+    @apply px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em];
+    font-family: var(--font-mono);
+    background-color: var(--signal-field);
+    color: var(--on-signal);
+  }
+
+  /* Ink-filled control for use on top of a colored bento tile, where
+     btn-primary's green would disappear into a green tile. */
+  .btn-invert {
+    @apply px-6 py-3 text-sm font-semibold tracking-wide transition-colors duration-150 ease-out cursor-pointer border-2;
+    font-family: var(--font-mono);
+    background-color: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .btn-invert:hover {
+    background-color: transparent;
+    color: var(--ink);
+  }
+
+  /* Bento tile fills — the homepage's About/Experience/Toolset blocks are
+     whole panels of flat color, not framed accents. */
+  .tile-ink { background-color: var(--ink); color: var(--paper); }
+  .tile-signal { background-color: var(--signal-field); color: var(--on-signal); }
+  .tile-limit { background-color: var(--limit-field); color: var(--on-limit); }
+
+  .pill {
+    @apply px-3 py-1.5 border-2 text-xs font-mono uppercase tracking-[0.08em] font-semibold;
   }
 }

@@ -1,62 +1,68 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 
+/** The document header rail — cream field, ink text, thick black bottom rule,
+ *  sticky so it reads as a fixed frame around the whole bento page. */
 export default function TopNav() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent ${scrolled ? "bg-primary/90 backdrop-blur-md border-border-color py-4 shadow-sm" : "bg-transparent py-6"
-        }`}
-    >
-      <div className="max-w-screen-2xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Left Links */}
-        <div className="flex items-center gap-4 md:gap-8">
+    <header className="sticky top-0 z-50 bg-primary border-b-2 border-theme">
+      <div className="max-w-[1180px] mx-auto px-4 md:px-8 h-14 md:h-16 flex items-center justify-between gap-4">
+        <button
+          type="button"
+          aria-label="Back to top"
+          className="font-display font-extrabold uppercase tracking-wide text-sm md:text-base shrink-0"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Umar Zubair
+        </button>
+
+        <div className="flex items-center gap-3 md:gap-5 shrink-0">
           <a
-            href="/Umarzubair__Product_Manager_Resume_2026.pdf"
-            download="Umar_Zubair_CV.pdf"
-            className="text-sm font-semibold tracking-wide uppercase px-4 py-2 bg-indigo text-white rounded hover:bg-indigo-light transition-colors"
+            href="#work"
+            className="hidden sm:block font-mono text-xs font-semibold uppercase tracking-[0.1em] hover:text-signal transition-colors"
           >
-            Download CV
+            Work
           </a>
-          <a href="mailto:umarzubaircs@gmail.com" className="text-sm font-semibold tracking-wide uppercase hover:text-indigo transition-colors hidden md:block">
+          <a
+            href="#manufacturer"
+            className="hidden sm:block font-mono text-xs font-semibold uppercase tracking-[0.1em] hover:text-signal transition-colors"
+          >
+            About
+          </a>
+          <a
+            href="mailto:umarzubaircs@gmail.com"
+            className="hidden sm:block font-mono text-xs font-semibold uppercase tracking-[0.1em] hover:text-signal transition-colors"
+          >
             Contact
           </a>
-        </div>
-
-        {/* Center Logo */}
-        <div className="absolute left-1/2 -translate-x-1/2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-          <span className="font-serif text-3xl font-bold tracking-tight">
-            Umar<span className="text-indigo">.</span>
-          </span>
-        </div>
-
-        {/* Right Links */}
-        <div className="flex items-center gap-4 md:gap-8">
-          <Link href="https://linkedin.com/in/umar-zubair960" target="_blank" className="text-sm font-semibold tracking-wide uppercase hover:text-indigo transition-colors hidden sm:block">
+          <Link
+            href="https://linkedin.com/in/umar-zubair960"
+            target="_blank"
+            className="hidden lg:block font-mono text-xs font-semibold uppercase tracking-[0.1em] hover:text-signal transition-colors"
+          >
             LinkedIn
           </Link>
-          <Link href="https://github.com/Um3rz" target="_blank" className="text-sm font-semibold tracking-wide uppercase hover:text-indigo transition-colors hidden sm:block">
+          <Link
+            href="https://github.com/Um3rz"
+            target="_blank"
+            className="hidden lg:block font-mono text-xs font-semibold uppercase tracking-[0.1em] hover:text-signal transition-colors"
+          >
             GitHub
           </Link>
+          <motion.a
+            whileTap={{ scale: 0.94, transition: { duration: 0.1 } }}
+            href="/Umarzubair__AI-Frontend-Engineer_Resume_2026.pdf"
+            download="Umar_Zubair_CV.pdf"
+            className="font-mono text-xs font-bold uppercase tracking-[0.1em] px-3 py-1.5 border-2 border-theme hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-colors"
+          >
+            CV ↓
+          </motion.a>
           <ThemeToggle />
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

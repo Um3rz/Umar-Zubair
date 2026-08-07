@@ -1,84 +1,68 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef, useEffect, useState } from "react";
-import * as THREE from "three";
-
-function SubtleRing() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.2;
-      meshRef.current.rotation.y += delta * 0.3;
-      // Subtle pulse effect
-      const scale = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05;
-      meshRef.current.scale.set(scale, scale, scale);
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <torusGeometry args={[1.5, 0.02, 16, 100]} />
-      <meshBasicMaterial color="#3D3D9E" />
-    </mesh>
-  );
-}
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface LoaderProps {
   onLoadComplete: () => void;
 }
 
+/** Sheet-load: a rule draws itself in, under a beat, then the document is up.
+ *  No 3D — the loader exists only to mask the Google Fonts FOIT. */
 export default function Loader({ onLoadComplete }: LoaderProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    // Shorter loading time for a snappier experience
-    const timer = setTimeout(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setIsVisible(false);
-      setTimeout(onLoadComplete, 800); // allow exit animation to finish
-    }, 1800);
+      return;
+    }
 
-    return () => clearTimeout(timer);
-  }, [onLoadComplete]);
+    // Cap it: document.fonts.ready can hang on a blocked or slow font host.
+    const cap = setTimeout(() => setIsVisible(false), 900);
+    let settle: ReturnType<typeof setTimeout>;
+
+    // Optional chaining is load-bearing: this effect throwing would leave the
+    // loader up forever, and the loader gates the entire page.
+    document.fonts?.ready.then(() => {
+      clearTimeout(cap);
+      settle = setTimeout(() => setIsVisible(false), 250);
+    });
+
+    return () => {
+      clearTimeout(cap);
+      clearTimeout(settle);
+    };
+  }, []);
 
   return (
-    <AnimatePresence>
+    /* Fires after the exit animation instead of a second timer racing it. */
+    <AnimatePresence onExitComplete={onLoadComplete}>
       {isVisible && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: "-10%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-primary"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-primary gap-4"
         >
-          <div className="w-48 h-48 relative mb-6">
-            <Canvas camera={{ position: [0, 0, 4] }}>
-              <SubtleRing />
-            </Canvas>
+          <div className="w-56 md:w-72 overflow-hidden">
+            <motion.div
+              initial={{ scaleX: reduced ? 1 : 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              style={{ transformOrigin: "left" }}
+              className="h-[3px] bg-signal"
+            />
           </div>
-          <motion.div 
-            initial={{ opacity: 0 }}
+          <motion.span
+            initial={{ opacity: reduced ? 1 : 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="flex gap-1"
+            transition={{ delay: 0.25, duration: 0.3 }}
+            className="font-mono text-xs uppercase tracking-[0.14em] text-muted"
           >
-            <motion.div
-              animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ repeat: Infinity, duration: 1.5, delay: 0 }}
-              className="w-1.5 h-1.5 rounded-full bg-indigo"
-            />
-            <motion.div
-              animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ repeat: Infinity, duration: 1.5, delay: 0.2 }}
-              className="w-1.5 h-1.5 rounded-full bg-indigo"
-            />
-            <motion.div
-              animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ repeat: Infinity, duration: 1.5, delay: 0.4 }}
-              className="w-1.5 h-1.5 rounded-full bg-indigo"
-            />
-          </motion.div>
+            Doc UZ-2026
+          </motion.span>
         </motion.div>
       )}
     </AnimatePresence>
