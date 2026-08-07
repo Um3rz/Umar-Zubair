@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeContext";
 
 export default function ThemeToggle() {
@@ -16,46 +17,27 @@ export default function ThemeToggle() {
   }
 
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 1.05, transition: { duration: 0.15 } }}
+      whileTap={{ scale: 0.92, transition: { duration: 0.1 } }}
       onClick={toggleTheme}
-      className={`p-2 rounded-full border-2 transition-colors duration-200 ${
-        theme === "dark" 
-          ? "border-indigo bg-nearBlack hover:bg-indigo-light" 
-          : "border-indigo bg-white hover:bg-indigo-light"
-      }`}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      className="relative px-2.5 py-1.5 border-2 border-theme font-mono text-[0.6875rem] font-bold uppercase tracking-[0.1em] transition-colors duration-150 hover:bg-[var(--ink)] hover:text-[var(--paper)] overflow-hidden"
+      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} print`}
+      title={`Switch to ${theme === "dark" ? "light" : "dark"} print`}
     >
-      {theme === "dark" ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-offWhite"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      {/* NEG/POS reads as a print flipping, not just a label swap. */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ rotateX: 90, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          exit={{ rotateX: -90, opacity: 0 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="inline-block"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-          />
-        </svg>
-      ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-yellow-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 12a3 3 0 100-6 3 3 0 000 6z"
-          />
-        </svg>
-      )}
-    </button>
+          {theme === "dark" ? "NEG" : "POS"}
+        </motion.span>
+      </AnimatePresence>
+    </motion.button>
   );
 }

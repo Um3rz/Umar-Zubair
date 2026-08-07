@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  BellOff, 
-  Inbox, 
-  Calendar, 
-  Map, 
-  Phone, 
-  Brain, 
-  Activity, 
-  FileText 
+import {
+  BellOff,
+  Inbox,
+  Calendar,
+  Map,
+  Phone,
+  Brain,
+  Activity,
+  FileText,
+  Workflow,
+  ShieldCheck,
+  Layers,
+  Gauge
 } from "lucide-react";
 
 import TopNav from "@/components/TopNav";
@@ -20,13 +24,16 @@ import About from "@/components/About";
 import CaseStudyCard from "@/components/CaseStudyCard";
 import CTAStrip from "@/components/Footer";
 import { Footer } from "@/components/Footer";
-import { SectionLabel, StatsRow, FeatureGrid } from "@/components/CaseStudyComponents";
-import InteractiveDots from "@/components/InteractiveDots";
+import { SectionBar, SpecTable, BlockDiagram } from "@/components/CaseStudyComponents";
+import { DevStudioSchematic, MedallionSchematic, ViTSchematic, SentinelSchematic } from "@/components/Schematic";
+
+const H2 = "font-display text-xl md:text-2xl font-bold uppercase tracking-wide mb-6 text-balance";
+const H3 = "font-mono text-sm font-semibold uppercase tracking-[0.08em] mt-6 mb-3 text-secondary";
 
 const clutterlessSections = (
   <>
-    <SectionLabel>01 — The Problem</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>01 — The Problem</SectionBar>
+    <h2 className={H2}>
       Students lose 45 minutes a day to inbox noise
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -35,15 +42,15 @@ const clutterlessSections = (
       in the same inbox. There&apos;s no signal-to-noise filter. Students either read everything
       (inefficient) or nothing (risky). Both paths create anxiety.
     </p>
-    <StatsRow
+    <SpecTable
       stats={[
         { number: "45 min", label: "Lost daily to email" },
         { number: "30+", label: "User interviews" },
         { number: "8", label: "Competitors audited" },
       ]}
     />
-    <SectionLabel>02 — Discovery Process</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>02 — Discovery Process</SectionBar>
+    <h2 className={H2}>
       How I validated the problem
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -59,8 +66,8 @@ const clutterlessSections = (
       <li><strong>Business/Social Sciences</strong> (n=11): Prefer simplicity.</li>
       <li><strong>Humanities/Languages</strong> (n=8): Rarely check settings.</li>
     </ul>
-    <SectionLabel>03 — Core Insight</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>03 — Core Insight</SectionBar>
+    <h2 className={H2}>
       The emotional angle matters more than the feature angle
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -72,47 +79,34 @@ const clutterlessSections = (
       The feature set needed to reduce not just time spent on email, but the emotional
       burden of knowing what you&apos;re missing.
     </p>
-    <SectionLabel>04 — Final Feature Set</SectionLabel>
-    <FeatureGrid
+    <SectionBar>04 — Final Feature Set</SectionBar>
+    <BlockDiagram
       features={[
         {
-          icon: <BellOff size={28} />,
+          icon: <BellOff size={24} />,
           title: "Frictionless Onboarding",
           description: "Login with Outlook. Mute top 3 bad senders in one screen. AI learns from day one.",
         },
         {
-          icon: <Inbox size={28} />,
+          icon: <Inbox size={24} />,
           title: "Today Inbox",
-          description: "Only today&apos;s emails. Swipe left to purge, right to pin. Fast triage.",
+          description: "Only today's emails. Swipe left to purge, right to pin. Fast triage.",
         },
         {
-          icon: <Calendar size={28} />,
+          icon: <Calendar size={24} />,
           title: "Intelligent Calendar",
           description: "Pulls schedules from LMS. Detects dates inside emails.",
         },
         {
-          icon: <Map size={28} />,
+          icon: <Map size={24} />,
           title: "Ambient Awareness",
           description: "Daily Digest + Bulletin Board. Discovery without inbox noise.",
         },
       ]}
     />
-    <SectionLabel>05 — Lessons</SectionLabel>
+    <SectionBar>05 — Lessons</SectionBar>
   </>
 );
-
-const clutterlessStats = [
-  { number: "45 min", label: "Lost daily to email" },
-  { number: "30+", label: "User interviews" },
-  { number: "8", label: "Competitors audited" },
-];
-
-const clutterlessFeatures = [
-  { icon: <BellOff size={24} />, title: "Frictionless Onboarding", description: "Login with Outlook. Mute top 3 bad senders." },
-  { icon: <Inbox size={24} />, title: "Today Inbox", description: "Only today&apos;s emails. Fast triage." },
-  { icon: <Calendar size={24} />, title: "Intelligent Calendar", description: "Pulls schedules from LMS." },
-  { icon: <Map size={24} />, title: "Ambient Awareness", description: "Daily Digest + Bulletin Board." },
-];
 
 const clutterlessLessons = [
   { number: 1, title: "Interview #8 reveals the real insight", description: "Early interviews showed volume. Deeper ones showed anxiety." },
@@ -125,47 +119,41 @@ const clutterlessOutcome = "A hi-fi prototype and full product spec, ready for s
 
 const tradeupSections = (
   <>
-    <SectionLabel>01 — Why Build It</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight text-primary mb-6">
+    <SectionBar>01 — Why Build It</SectionBar>
+    <h2 className={H2}>
       Teaching investing is easier with real stakes
     </h2>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <p className="text-base md:text-lg mb-4">
       Most university investing clubs teach with spreadsheets. It&apos;s passive. But when
       students manage a portfolio — even fake — the emotional stakes are different. They read
       financial news. They understand volatility when their &quot;money&quot; is at risk.
     </p>
-    <StatsRow
+    <SpecTable
       stats={[
         { number: "100+", label: "Active traders" },
         { number: "4 weeks", label: "MVP to launch" },
         { number: "0", label: "Third-party APIs" },
       ]}
     />
-    <SectionLabel>02 — Technical Decisions</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight text-primary mb-6">
+    <SectionBar>02 — Technical Decisions</SectionBar>
+    <h2 className={H2}>
       Build fast, don&apos;t optimize prematurely
     </h2>
-    <h3 className="text-base font-semibold text-primary mt-6 mb-3">Data pipeline</h3>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <h3 className={H3}>Data pipeline</h3>
+    <p className="text-base md:text-lg mb-4">
       Built a scraper for PSX data → PostgreSQL → REST API. Added Redis later for read-heavy endpoints.
     </p>
-    <h3 className="text-base font-semibold text-primary mt-6 mb-3">Frontend</h3>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <h3 className={H3}>Frontend</h3>
+    <p className="text-base md:text-lg mb-4">
       React + Tailwind. Responsive dashboard in days.
     </p>
-    <h3 className="text-base font-semibold text-primary mt-6 mb-3">Deployment</h3>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <h3 className={H3}>Deployment</h3>
+    <p className="text-base md:text-lg mb-4">
       Docker + AWS ECS. Kept costs low by right-sizing instances.
     </p>
-    <SectionLabel>03 — Lessons</SectionLabel>
+    <SectionBar>03 — Lessons</SectionBar>
   </>
 );
-
-const tradeupStats = [
-  { number: "100+", label: "Active traders" },
-  { number: "4 weeks", label: "MVP to launch" },
-  { number: "0", label: "Third-party APIs" },
-];
 
 const tradeupLessons = [
   { number: 1, title: "Leaderboard gamification wins", description: "Users logged in daily to check rankings." },
@@ -173,54 +161,49 @@ const tradeupLessons = [
   { number: 3, title: "Products need a story", description: "This is how real trading works." },
 ];
 
-const tradeupOutcome = "Production platform tested with 50+ users.";
+const tradeupOutcome = "Production platform with 100+ active traders.";
 
 const sentinelSections = (
   <>
-    <SectionLabel>01 — The Problem</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight text-primary mb-6">
+    <SectionBar>01 — The Problem</SectionBar>
+    <h2 className={H2}>
       Visual regressions take 2–3 days to debug
     </h2>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <p className="text-base md:text-lg mb-4">
       Typical QA: developer pushes → designer spots regression → writes bug report → developer investigates → repeat.
       Each cycle takes hours because the feedback loop is slow.
     </p>
-    <StatsRow
+    <SpecTable
       stats={[
         { number: "2–3 days", label: "Current debug time" },
         { number: "45 min", label: "With autonomous agent" },
-        { number: "100%", label: "Automated PR" },
+        { number: "85%", label: "Fix success rate" },
       ]}
     />
-    <SectionLabel>02 — Product Concept</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight text-primary mb-6">
+    <SectionBar>02 — Product Concept</SectionBar>
+    <h2 className={H2}>
       An agent that fixes bugs before humans see them
     </h2>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <p className="text-base md:text-lg mb-4">
       The Sentinel: takes screenshot → analyzes with Gemini Vision → generates code fix → opens PR.
     </p>
-    <p className="text-base md:text-lg text-primary mb-4">
+    <p className="text-base md:text-lg mb-4">
       Waits for CI. If tests fail, rewrites the fix. Once tests pass, PR is ready for review.
     </p>
-    <SectionLabel>03 — Technical Architecture</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight text-primary mb-6">
+    <SectionBar>03 — Technical Architecture</SectionBar>
+    <h2 className={H2}>
       A self-correcting feedback loop
     </h2>
-    <h3 className="text-base font-semibold text-primary mt-6 mb-3">Input</h3>
-    <p className="text-base md:text-lg text-primary mb-4">Gemini Vision analyzes screenshots with design system context.</p>
-    <h3 className="text-base font-semibold text-primary mt-6 mb-3">Generation</h3>
-    <p className="text-base md:text-lg text-primary mb-4">Generates scoped CSS/JSX changes from GitHub context.</p>
-    <h3 className="text-base font-semibold text-primary mt-6 mb-3">Feedback Loop</h3>
-    <p className="text-base md:text-lg text-primary mb-4">Monitors CI/CD, rewrites on failure. 85% success rate.</p>
-    <SectionLabel>04 — Lessons</SectionLabel>
+    <SentinelSchematic />
+    <h3 className={H3}>Input</h3>
+    <p className="text-base md:text-lg mb-4">Gemini Vision analyzes screenshots with design system context.</p>
+    <h3 className={H3}>Generation</h3>
+    <p className="text-base md:text-lg mb-4">Generates scoped CSS/JSX changes from GitHub context.</p>
+    <h3 className={H3}>Feedback Loop</h3>
+    <p className="text-base md:text-lg mb-4">Monitors CI/CD, rewrites on failure. 85% success rate.</p>
+    <SectionBar>04 — Lessons</SectionBar>
   </>
 );
-
-const sentinelStats = [
-  { number: "2–3 days", label: "Current debug time" },
-  { number: "45 min", label: "With autonomous agent" },
-  { number: "100%", label: "Automated PR" },
-];
 
 const sentinelLessons = [
   { number: 1, title: "Vision models work for UI analysis", description: "85%+ accuracy with right prompting." },
@@ -232,8 +215,8 @@ const sentinelOutcome = "Proof-of-concept viable. AI tooling = working with huma
 
 const serenelySections = (
   <>
-    <SectionLabel>01 — The Problem</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>01 — The Problem</SectionBar>
+    <h2 className={H2}>
       University students are drowning in stress with no immediate support
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -245,15 +228,15 @@ const serenelySections = (
       There&apos;s a market gap between &quot;nothing&quot; and &quot;professional therapy.&quot;
       Students need something: immediate, low-friction, non-judgmental.
     </p>
-    <StatsRow
+    <SpecTable
       stats={[
         { number: "6 weeks", label: "Counseling waitlist" },
         { number: "70%", label: "Avoid seeking help due to stigma" },
         { number: "50+", label: "Active pilot users" },
       ]}
     />
-    <SectionLabel>02 — Discovery Process</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>02 — Discovery Process</SectionBar>
+    <h2 className={H2}>
       What students actually need
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -264,8 +247,8 @@ const serenelySections = (
       <li><strong>65%</strong> would use a voice AI if it felt human and kept conversations private</li>
       <li>They need support <em>now</em>, not in 6 weeks</li>
     </ul>
-    <SectionLabel>03 — Core Insight</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>03 — Core Insight</SectionBar>
+    <h2 className={H2}>
       Friction is the enemy, not information
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -276,8 +259,8 @@ const serenelySections = (
       <em>Insight:</em> This wasn&apos;t about building a therapist replacement. It was about building a
       friction-free entry point to emotional processing.
     </p>
-    <SectionLabel>04 — Design Iterations</SectionLabel>
-    <h2 className="font-serif text-2xl md:text-3xl leading-tight mb-6">
+    <SectionBar>04 — Design Iterations</SectionBar>
+    <h2 className={H2}>
       From text bot to empathetic voice
     </h2>
     <p className="text-base md:text-lg mb-4">
@@ -290,47 +273,34 @@ const serenelySections = (
       <strong>Version 3:</strong> Empathetic system prompt + better voice model. Game changer.
       Rewrote prompts to validate first: &quot;That sounds really hard. Tell me more.&quot; Added natural pauses.
     </p>
-    <SectionLabel>05 — Final Feature Set</SectionLabel>
-    <FeatureGrid
+    <SectionBar>05 — Final Feature Set</SectionBar>
+    <BlockDiagram
       features={[
         {
-          icon: <Phone size={28} />,
+          icon: <Phone size={24} />,
           title: "Voice Interface",
           description: "Call in anytime. No appointment friction. AI answers immediately.",
         },
         {
-          icon: <Brain size={28} />,
+          icon: <Brain size={24} />,
           title: "Empathetic AI",
           description: "System prompt built around validation, curiosity, non-judgment.",
         },
         {
-          icon: <Activity size={28} />,
+          icon: <Activity size={24} />,
           title: "Stress Toolkit",
           description: "4-7-8 breathing, grounding exercises offered when anxiety detected.",
         },
         {
-          icon: <FileText size={28} />,
+          icon: <FileText size={24} />,
           title: "Session Summaries",
           description: "Private text summary after each call. Encrypted. Only user sees it.",
         },
       ]}
     />
-    <SectionLabel>06 — Lessons</SectionLabel>
+    <SectionBar>06 — Lessons</SectionBar>
   </>
 );
-
-const serenelyStats = [
-  { number: "50+", label: "Active users in pilot" },
-  { number: "70%", label: "Signups used at least once" },
-  { number: "40%", label: "Used weekly" },
-];
-
-const serenelyFeatures = [
-  { icon: <Phone size={24} />, title: "Voice Interface", description: "Call anytime, no appointment needed." },
-  { icon: <Brain size={24} />, title: "Empathetic AI", description: "Validation-first, not advice-first." },
-  { icon: <Activity size={24} />, title: "Stress Toolkit", description: "Breathing exercises on demand." },
-  { icon: <FileText size={24} />, title: "Session Summaries", description: "Private, encrypted summaries." },
-];
 
 const serenelyLessons = [
   { number: 1, title: "Tone of voice matters more than features", description: "Same tech, completely different feeling with empathetic prompts." },
@@ -339,7 +309,335 @@ const serenelyLessons = [
   { number: 4, title: "Low-friction entry beats comprehensive features", description: "One thing: call right now and talk." },
 ];
 
-const serenelyOutcome = "50+ active users. 70% engagement. Key insight: technology doesn't solve mental health — empathy does.";
+const serenelyOutcome = "50+ active pilot users. 70% of signups used it at least once, 40% weekly. Key insight: technology doesn't solve mental health — empathy does.";
+
+const devStudioSections = (
+  <>
+    <SectionBar>01 — Why Build It</SectionBar>
+    <h2 className={H2}>
+      Single-shot code generation is a coin flip
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Ask a model for a working game and you get plausible code that crashes on the first run.
+      The gap isn&apos;t reasoning — it&apos;s that nothing ever executes the output, reads the
+      error, and tries again. A real engineering team doesn&apos;t ship its first draft either.
+      It has a design review, a build, and a QA pass.
+    </p>
+    <SpecTable
+      stats={[
+        { number: "7", label: "Pipeline nodes" },
+        { number: "2", label: "Human approval gates" },
+        { number: "1–10", label: "QA score per pass" },
+      ]}
+    />
+    <SectionBar>02 — System Design</SectionBar>
+    <h2 className={H2}>
+      An engineering team, modelled as a graph
+    </h2>
+    <DevStudioSchematic />
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Seven specialised nodes, each with one job. <strong>Director</strong> captures the objective.
+      <strong> Architect</strong> turns it into a system design. <strong>Engineer</strong> writes the
+      Pygame code from that design plus any prior QA feedback. <strong>File Writer</strong> persists it.
+      <strong> Execution Manager</strong> runs it in a subprocess with a timeout and captures the output.
+      <strong> QA Engineer</strong> reads that output back against the original requirements.
+      <strong> Scorer</strong> rates the result out of ten.
+    </p>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      The graph then cycles back to the Engineer — not a fresh one, the same one, still holding
+      every prior iteration.
+    </p>
+    <SectionBar>03 — The Hard Part</SectionBar>
+    <h2 className={H2}>
+      Memory that accumulates instead of overwriting
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      LangGraph replaces a state field by default when a node writes to it. That quietly destroys
+      the thing the loop depends on: by iteration three the Engineer needs iteration one&apos;s design
+      and iteration two&apos;s QA notes, not just the newest message. Routing the message fields
+      through additive reducers keeps the full history in scope, so each pass refines rather than
+      restarts.
+    </p>
+    <SectionBar>04 — Safety</SectionBar>
+    <h2 className={H2}>
+      The graph never runs its own output unsupervised
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      A pipeline that writes code and executes it is a pipeline that can execute anything it writes.
+      Two hard human-in-the-loop gates sit inside the graph: one before any generated file is run,
+      one before a refinement iteration is triggered. Neither is a warning you can click past —
+      the graph pauses and waits.
+    </p>
+    <BlockDiagram
+      features={[
+        {
+          icon: <Workflow size={24} />,
+          title: "Seven-Node Pipeline",
+          description: "Director, Architect, Engineer, File Writer, Execution Manager, QA, Scorer — each with one job.",
+        },
+        {
+          icon: <ShieldCheck size={24} />,
+          title: "Hard Approval Gates",
+          description: "Execution halts for a human before any generated file is allowed to run.",
+        },
+        {
+          icon: <Layers size={24} />,
+          title: "Accumulating State",
+          description: "Additive reducers keep every design, build, and critique inside the Engineer's context.",
+        },
+        {
+          icon: <Gauge size={24} />,
+          title: "Scored Iterations",
+          description: "A rating out of ten makes “is this better?” a decision rather than a feeling.",
+        },
+      ]}
+    />
+    <SectionBar>05 — Lessons</SectionBar>
+  </>
+);
+
+const devStudioLessons = [
+  { number: 1, title: "Execution is the only honest test", description: "Static review of generated code says very little. Running it and reading stderr says everything." },
+  { number: 2, title: "Reducers, not overwrites", description: "Default state behaviour silently deleted the context the loop ran on. A small fix, and the entire difference in output quality." },
+  { number: 3, title: "Autonomy needs a stop", description: "The useful question wasn't how much the agents could do alone. It was where a human had to stay in the path." },
+  { number: 4, title: "Roles beat prompts", description: "Splitting one “write me a game” prompt into an Architect and an Engineer produced better code than any single prompt did." },
+];
+
+const devStudioOutcome = "A working design → build → run → critique → refine loop that produces a playable Pygame build, with a human holding the execute key.";
+
+const medallionSections = (
+  <>
+    <SectionBar>01 — The Problem</SectionBar>
+    <h2 className={H2}>
+      Streaming pipelines break on the data nobody predicted
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      A batch job that hits an unexpected column fails, and you rerun it. A streaming job that hits
+      one dies mid-flight and takes the freshness of every downstream table with it. Add flight data
+      that arrives asynchronously and out of order, and correctness and uptime start pulling in
+      opposite directions.
+    </p>
+    <SpecTable
+      stats={[
+        { number: "3", label: "Medallion layers" },
+        { number: "4", label: "Gold aggregations" },
+        { number: "7 days", label: "Late-arrival watermark" },
+      ]}
+    />
+    <SectionBar>02 — Architecture</SectionBar>
+    <h2 className={H2}>
+      Bronze catches, silver corrects, gold aggregates
+    </h2>
+    <MedallionSchematic />
+    <h3 className={H3}>Bronze</h3>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Auto Loader watches a landing zone with schema evolution set to <em>rescue</em>, so an
+      unexpected column lands in a rescue field instead of killing the stream. Every row carries its
+      ingestion timestamp. Writes are append-only to Delta.
+    </p>
+    <h3 className={H3}>Silver</h3>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Type casting, a derived event timestamp, and two broadcast joins against airport reference
+      data — one for origin, one for destination. Late corrections arrive as CDC and apply through
+      a guarded <code>MERGE INTO</code>, where the sequence number decides the winner. An older
+      update can never overwrite a newer one just by arriving later.
+    </p>
+    <h3 className={H3}>Gold</h3>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Four windowed aggregations: monthly delay averages, biweekly distance totals, worst route per
+      month, and hourly flight counts.
+    </p>
+    <SectionBar>03 — Cost Decisions</SectionBar>
+    <h2 className={H2}>
+      Correctness you can afford to leave running
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Three choices that were about the bill as much as the output. <strong>availableNow</strong> triggers
+      process everything currently available and then stop, so no cluster idles waiting for files.
+      <strong> Broadcast joins</strong> ship the small airport table out to every worker instead of
+      shuffling the large stream across the network. <strong>Seven-day watermarks</strong> let late
+      records land without recomputing history.
+    </p>
+    <SectionBar>04 — Lessons</SectionBar>
+  </>
+);
+
+const medallionLessons = [
+  { number: 1, title: "Rescue beats strictness", description: "Rejecting an unexpected column protects the table and kills the pipeline. Rescuing it protects both." },
+  { number: 2, title: "Arrival order is not event order", description: "A sequence-guarded merge was the difference between a correct table and a merely plausible one." },
+  { number: 3, title: "Watermarks are a cost lever", description: "Bounding lateness to seven days is what makes “handle late data” something other than “recompute everything, forever.”" },
+  { number: 4, title: "Idle clusters are the real bill", description: "Trigger choice turned a continuously-running cost into a per-batch one, with no change to the output." },
+];
+
+const medallionOutcome = "A continuously-running medallion pipeline that survives schema drift, corrects out-of-order records, and doesn't bill for idle time.";
+
+const vitSections = (
+  <>
+    <SectionBar>01 — The Problem</SectionBar>
+    <h2 className={H2}>
+      Staging matters more than detection
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Whether Alzheimer&apos;s is present is a smaller question than how far it has progressed —
+      the intervention differs at each stage. That turns a binary problem into a four-class one
+      across CN, EMCI, LMCI and AD, where the boundaries between adjacent stages are exactly where
+      the visual differences are smallest.
+    </p>
+    <SpecTable
+      stats={[
+        { number: "95%", label: "Accuracy on OASIS" },
+        { number: "4", label: "Disease stages" },
+        { number: "2", label: "Training phases" },
+      ]}
+    />
+    <SectionBar>02 — Architecture</SectionBar>
+    <h2 className={H2}>
+      A convolutional backbone under a transformer head
+    </h2>
+    <ViTSchematic />
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      A pretrained MobileNetV2 extracts features from 160×160 MRI slices; a custom Vision Transformer
+      head sits on top with patch projection, a class token, and positional embeddings. The
+      convolution handles local texture, the transformer relates regions across the whole scan.
+    </p>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      SWIN and DeiT were tried first. Both wanted more data than these datasets provided, and that
+      constraint is what chose the architecture.
+    </p>
+    <SectionBar>03 — Training</SectionBar>
+    <h2 className={H2}>
+      Freeze, then fine-tune
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Phase one trains only the ViT head — projection, class token, positional embeddings — with
+      roughly 90% of the backbone frozen, so the new head learns against stable features. Phase two
+      unfreezes the backbone and fine-tunes end to end at a reduced learning rate, with early
+      stopping on validation loss.
+    </p>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Data came from ADNI, labelled across the four stages, and OASIS. The full pipeline — loading,
+      preprocessing, training, and evaluation — was built end to end.
+    </p>
+    <SectionBar>04 — Lessons</SectionBar>
+  </>
+);
+
+const vitLessons = [
+  { number: 1, title: "Data volume picks the architecture", description: "SWIN was the better model on paper and the wrong one for this dataset. The constraint decided, not the benchmark." },
+  { number: 2, title: "Transfer learning is staged, not switched", description: "Fine-tuning everything from the start washes out the pretrained features that were worth keeping." },
+  { number: 3, title: "The pipeline is most of the work", description: "Loading, preprocessing, and evaluation took more effort than defining the model did." },
+];
+
+const vitOutcome = "95% accuracy on OASIS from a MobileNetV2 + ViT hybrid, trained end to end on a self-built data pipeline.";
+
+const CASE_STUDIES = [
+  {
+    id: "serenely",
+    title: "Serenely",
+    category: "Health · Voice AI",
+    meta: "AI voice therapy companion",
+    proof: "50+ pilot users · 70% returned",
+    role: "PM & Tech Lead",
+    teamSize: "5 eng, 3mo",
+    tools: "FastAPI, React, OpenAI API, PostgreSQL, Twilio",
+    users: "50+ active during pilot",
+    context: "LUMS SE Capstone",
+    content: serenelySections,
+    lessons: serenelyLessons,
+    outcome: serenelyOutcome,
+    link: "https://github.com/Um3rz/serenely",
+  },
+  {
+    id: "clutterless",
+    title: "Clutterless",
+    category: "Product · AI",
+    meta: "AI-powered academic email management",
+    proof: "30+ interviews · hi-fi spec",
+    role: "PM & Designer",
+    teamSize: "5 ppl, 8wk",
+    tools: "Figma, Miro, User Testing",
+    context: "LUMS HCI Capstone",
+    content: clutterlessSections,
+    lessons: clutterlessLessons,
+    outcome: clutterlessOutcome,
+    link: "https://www.figma.com/proto/fZlHc4EQAx3jYHovTUVEU7/Clutterless--Copy-?node-id=2016-1947&t=gNbic8dqG8mLq9Cw-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2016%3A1947",
+  },
+  {
+    id: "tradeup",
+    title: "TradeUp",
+    category: "Fintech · Web",
+    meta: "PSX mock trading platform",
+    proof: "100+ traders · 4wk launch",
+    role: "Full Stack + PM",
+    teamSize: "Solo",
+    tools: "React, Node.js, PostgreSQL, AWS",
+    users: "100+ active traders",
+    content: tradeupSections,
+    lessons: tradeupLessons,
+    outcome: tradeupOutcome,
+    link: "https://github.com/Um3rz/TradeUp",
+  },
+  {
+    id: "sentinel",
+    title: "The Sentinel",
+    category: "Infra · Agents",
+    meta: "Autonomous QA agent",
+    proof: "85% fix rate · 2d → 45min",
+    role: "Product & Engineer",
+    teamSize: "Solo",
+    tools: "Gemini, FastAPI, Playwright",
+    problemSpace: "Visual regression testing",
+    content: sentinelSections,
+    lessons: sentinelLessons,
+    outcome: sentinelOutcome,
+    link: "https://github.com/Um3rz/the-Sentinel",
+  },
+  {
+    id: "dev-studio",
+    title: "Autonomous Dev Studio",
+    category: "Agents · Tooling",
+    meta: "Multi-agent pipeline that writes and tests its own code",
+    proof: "7-node graph · 2 gates",
+    role: "Solo — agent architecture",
+    teamSize: "Solo",
+    tools: "LangGraph, LangChain, OpenAI API, Pygame, Python",
+    problemSpace: "Autonomous code generation",
+    content: devStudioSections,
+    lessons: devStudioLessons,
+    outcome: devStudioOutcome,
+    link: "https://github.com/Um3rz/Agentic-Game-Studio",
+  },
+  {
+    id: "medallion",
+    title: "Real-Time Medallion Pipeline",
+    category: "Data · Streaming",
+    meta: "Fault-tolerant streaming on Databricks",
+    proof: "3 layers · 7-day late arrivals",
+    role: "Solo — pipeline design",
+    teamSize: "Solo",
+    tools: "Databricks, PySpark, Structured Streaming, Delta Lake",
+    problemSpace: "Real-time flight delay analytics",
+    content: medallionSections,
+    lessons: medallionLessons,
+    outcome: medallionOutcome,
+    link: "https://github.com/Um3rz/Medallion-databricks",
+  },
+  {
+    id: "vit-alzheimers",
+    title: "Vision Transformer for Alzheimer's",
+    category: "ML · Research",
+    meta: "Staging disease progression from MRI",
+    proof: "95% accuracy · 4 stages",
+    role: "Solo — model & pipeline",
+    teamSize: "Solo",
+    tools: "TensorFlow, Keras, Python",
+    problemSpace: "Medical imaging / disease staging",
+    content: vitSections,
+    lessons: vitLessons,
+    outcome: vitOutcome,
+    link: "https://github.com/Um3rz/Alzheimers_Progress_Classification_w_ViT",
+  },
+];
 
 export default function Home() {
   const [expandedCard, setExpandedCard] = useState<number | string | null>(null);
@@ -350,144 +648,61 @@ export default function Home() {
   };
 
   const scrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
       <Loader onLoadComplete={() => setIsLoaded(true)} />
-      
+
       {isLoaded && (
-        <motion.main 
+        <motion.main
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="min-h-screen bg-primary relative pt-24"
+          transition={{ duration: 0.4 }}
+          className="min-h-screen bg-primary"
         >
-          <InteractiveDots dotColor="#3D3D9E" spacing={50} backgroundOpacity={0.1} />
           <TopNav />
 
-          <section id="projects" className="px-4 md:px-8 pb-24">
-            <div className="max-w-[1400px] mx-auto">
-              
-              {/* Main Bento Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-min">
-                
-                {/* Hero Tile */}
-                <Hero 
-                  className="col-span-1 md:col-span-2 lg:col-span-2 row-span-2 shadow-neoLg rounded-xl" 
-                  onLearnMore={() => setExpandedCard('about')}
-                  onViewWork={scrollToProjects}
-                />
-                
-                {/* About Tile */}
-                <About 
-                  className="col-span-1 md:col-span-1 lg:col-span-2 row-span-2 shadow-neo rounded-xl" 
-                  isExpanded={expandedCard === 'about'}
-                  onToggle={() => handleToggle('about')}
-                />
+          <section id="intro" className="px-4 md:px-8 py-8 md:py-10">
+            <div className="max-w-[1180px] mx-auto">
+              <Hero onLearnMore={() => setExpandedCard("about")} onViewWork={scrollToProjects} />
+            </div>
+          </section>
 
-                {/* Case Study 1 - Serenely (Featured) */}
-                <CaseStudyCard
-                  index={3}
-                  isExpanded={expandedCard === 3}
-                  onToggle={() => handleToggle(3)}
-                  colSpan="col-span-1 md:col-span-2 lg:col-span-2"
-                  rowSpan="row-span-1 md:row-span-2 rounded-xl shadow-neo"
-                  data={{
-                    id: "serenely",
-                    title: "Serenely",
-                    meta: "AI voice therapy companion",
-                    role: "Product Manager & Technical Lead",
-                    teamSize: "5 engineers, 3-month sprint",
-                    tools: "FastAPI, React, OpenAI API, PostgreSQL, Twilio",
-                    users: "50+ active during pilot",
-                    context: "LUMS Software Engineering Capstone",
-                    content: serenelySections,
-                    stats: serenelyStats,
-                    features: serenelyFeatures,
-                    lessons: serenelyLessons,
-                    outcome: serenelyOutcome,
-                    link: "https://github.com/Um3rz/serenely"
-                  }}
-                />
+          <section className="px-4 md:px-8 pb-10 md:pb-12">
+            <div className="max-w-[1180px] mx-auto">
+              <About isExpanded={expandedCard === "about"} onToggle={() => handleToggle("about")} />
+            </div>
+          </section>
 
-                {/* Case Study 2 - Clutterless */}
-                <CaseStudyCard
-                  index={0}
-                  isExpanded={expandedCard === 0}
-                  onToggle={() => handleToggle(0)}
-                  colSpan="col-span-1 md:col-span-2 lg:col-span-2"
-                  rowSpan="row-span-1 rounded-xl shadow-neo"
-                  data={{
-                    id: "clutterless",
-                    title: "Clutterless",
-                    meta: "AI-powered academic email management",
-                    role: "Product Manager & Designer",
-                    teamSize: "5 people, 8 weeks",
-                    tools: "Figma, Miro, User Testing",
-                    context: "LUMS HCI Capstone",
-                    content: clutterlessSections,
-                    stats: clutterlessStats,
-                    features: clutterlessFeatures,
-                    lessons: clutterlessLessons,
-                    outcome: clutterlessOutcome,
-                    link: "https://www.figma.com/proto/fZlHc4EQAx3jYHovTUVEU7/Clutterless--Copy-?node-id=2016-1947&t=gNbic8dqG8mLq9Cw-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2016%3A1947",
-                  }}
-                />
+          <section id="work" className="px-4 md:px-8 pb-10 md:pb-12">
+            <div className="max-w-[1180px] mx-auto">
+              <div className="section-bar flex items-center justify-between mb-4">
+                <span>Selected Work</span>
+                <span className="opacity-90">{CASE_STUDIES.length} Projects · 2024–2026</span>
+              </div>
 
-                {/* Case Study 3 - TradeUp */}
-                <CaseStudyCard
-                  index={1}
-                  isExpanded={expandedCard === 1}
-                  onToggle={() => handleToggle(1)}
-                  colSpan="col-span-1 md:col-span-1 lg:col-span-1"
-                  rowSpan="row-span-1 rounded-xl shadow-neo"
-                  data={{
-                    id: "tradeup",
-                    title: "TradeUp",
-                    meta: "PSX mock trading platform",
-                    role: "Full Stack Engineer + PM",
-                    teamSize: "Solo, shipped in production",
-                    tools: "React, Node.js, PostgreSQL, AWS",
-                    users: "100+ active traders",
-                    content: tradeupSections,
-                    stats: tradeupStats,
-                    lessons: tradeupLessons,
-                    outcome: tradeupOutcome,
-                    link: "https://github.com/Um3rz/TradeUp",
-                  }}
-                />
-
-                {/* Case Study 4 - Sentinel */}
-                <CaseStudyCard
-                  index={2}
-                  isExpanded={expandedCard === 2}
-                  onToggle={() => handleToggle(2)}
-                  colSpan="col-span-1 md:col-span-1 lg:col-span-1"
-                  rowSpan="row-span-1 rounded-xl shadow-neo"
-                  data={{
-                    id: "sentinel",
-                    title: "The Sentinel",
-                    meta: "Autonomous QA agent",
-                    role: "Product & Engineer",
-                    teamSize: "Solo entry",
-                    tools: "Gemini, FastAPI, Playwright",
-                    problemSpace: "Visual regression testing",
-                    content: sentinelSections,
-                    stats: sentinelStats,
-                    lessons: sentinelLessons,
-                    outcome: sentinelOutcome,
-                    link: "https://github.com/Um3rz/the-Sentinel",
-                  }}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                {CASE_STUDIES.map((study, idx) => (
+                  <CaseStudyCard
+                    key={study.id}
+                    ordinal={idx + 1}
+                    isExpanded={expandedCard === idx}
+                    onToggle={() => handleToggle(idx)}
+                    data={study}
+                  />
+                ))}
               </div>
             </div>
           </section>
 
-          <div className="h-px bg-border mx-6 my-12"></div>
+          <section className="px-4 md:px-8 pb-10 md:pb-12">
+            <div className="max-w-[1180px] mx-auto">
+              <CTAStrip />
+            </div>
+          </section>
 
-          <CTAStrip />
           <Footer />
         </motion.main>
       )}

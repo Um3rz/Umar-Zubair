@@ -1,3 +1,7 @@
 node_modules
 .next
 nul
+.claude/.headroom_wrap_marker.json
+.tokensave
+.impeccable
+.claude

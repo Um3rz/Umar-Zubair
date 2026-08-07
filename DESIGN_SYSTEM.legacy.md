@@ -1,3 +1,18 @@
+> **SUPERSEDED — kept for history only. Do not implement from this file.**
+>
+> `DESIGN.md` at the repo root is the authority. This document was written for a
+> different build and contradicts the shipped app on nearly every point: it
+> specifies plain `index.html` + `styles/main.css` (the app is Next.js), a
+> light-only palette with dark mode listed as a future maybe (dark is the
+> default and ships today), collapsible accordions (the app uses a bento grid
+> with shared-element modals), three case studies (there are four), and
+> `border-radius: 0` everywhere (wall-level tiles are 12px).
+>
+> What survived into the real system: the DM Serif Display / DM Sans pairing,
+> the indigo `#3D3D9E`, near-black `#111118`, the `4px 4px 0` / `6px 6px 0`
+> neobrutalist shadows, and the 17px/1.75 body setting. The amber `#F5A623` and
+> crimson `#E84545` accents defined here were never used.
+
 # Umar Zubair — PM Portfolio | Design System Document
 
 ## Overview
