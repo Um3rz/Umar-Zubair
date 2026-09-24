@@ -14,20 +14,22 @@ import {
   Workflow,
   ShieldCheck,
   Layers,
-  Gauge
+  Gauge,
+  ChevronRight,
+  Award
 } from "lucide-react";
 
 import TopNav from "@/components/TopNav";
 import Loader from "@/components/Loader";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
+import About, { tools, experiences, certifications } from "@/components/About";
 import CaseStudyCard from "@/components/CaseStudyCard";
 import CTAStrip from "@/components/Footer";
 import { Footer } from "@/components/Footer";
 import { SectionBar, SpecTable, BlockDiagram } from "@/components/CaseStudyComponents";
 import { DevStudioSchematic, MedallionSchematic, ViTSchematic, SentinelSchematic } from "@/components/Schematic";
 
-const H2 = "font-display text-xl md:text-2xl font-bold uppercase tracking-wide mb-6 text-balance";
+const H2 = "font-display text-2xl md:text-3xl font-bold uppercase tracking-wide mb-6 text-balance";
 const H3 = "font-mono text-sm font-semibold uppercase tracking-[0.08em] mt-6 mb-3 text-secondary";
 
 const clutterlessSections = (
@@ -665,40 +667,117 @@ export default function Home() {
           <TopNav />
 
           <section id="intro" className="px-4 md:px-8 py-8 md:py-10">
-            <div className="max-w-[1180px] mx-auto">
+            <div className="max-w-[1400px] mx-auto">
               <Hero onLearnMore={() => setExpandedCard("about")} onViewWork={scrollToProjects} />
             </div>
           </section>
 
+          {/* Detail modal only — the tiles this used to render are replaced
+              below by the Skills / Featured Projects / Certifications /
+              Experience sections, all of which reuse the same underlying data. */}
+          <About isExpanded={expandedCard === "about"} onToggle={() => handleToggle("about")} hideTiles />
+
           <section className="px-4 md:px-8 pb-10 md:pb-12">
-            <div className="max-w-[1180px] mx-auto">
-              <About isExpanded={expandedCard === "about"} onToggle={() => handleToggle("about")} />
+            <div className="max-w-[1400px] mx-auto tile-ink border-2 border-theme shadow-neo-lg p-5 md:px-8 md:py-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="sticker tile-limit shadow-neo">Skills →</span>
+              </div>
+              <div className="overflow-hidden">
+                <div className="marquee-track flex items-center gap-10 w-max">
+                  {[...tools, ...tools].map((tool, idx) => (
+                    <span key={`${tool.name}-${idx}`} className="flex items-center gap-2 shrink-0 font-mono text-xs uppercase tracking-[0.08em]">
+                      {tool.icon}
+                      {tool.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="about" className="px-4 md:px-8 pb-10 md:pb-12">
+            <div className="max-w-[1400px] mx-auto">
+              <div className="section-bar mb-4">Experience</div>
+              <div className="space-y-4">
+                {experiences.map((exp) => (
+                  <div
+                    key={exp.role}
+                    className="bg-secondary border-2 border-theme shadow-neo p-5 md:p-6 grid grid-cols-1 md:grid-cols-[9rem_1fr] gap-3 md:gap-6"
+                  >
+                    <div className="font-mono text-xs text-signal font-semibold uppercase tracking-[0.1em]">
+                      {exp.date}
+                    </div>
+                    <div>
+                      <h4 className="font-display font-bold uppercase tracking-wide text-base mb-0.5">
+                        {exp.role}
+                      </h4>
+                      <p className="text-sm text-secondary mb-2">{exp.company} · {exp.location}</p>
+                      <p className="text-sm text-muted">{exp.points[0]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <motion.button
+                whileHover={{ x: -2, y: -2, boxShadow: "6px 6px 0 0 var(--ink)", transition: { duration: 0.15 } }}
+                whileTap={{ scale: 0.98, x: 0, y: 0, boxShadow: "0 0 0 0 var(--ink)", transition: { duration: 0.1 } }}
+                onClick={() => handleToggle("about")}
+                className="mt-4 inline-flex items-center gap-1.5 bg-secondary border-2 border-theme shadow-neo px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.1em]"
+              >
+                View Full Resume <ChevronRight size={14} />
+              </motion.button>
             </div>
           </section>
 
           <section id="work" className="px-4 md:px-8 pb-10 md:pb-12">
-            <div className="max-w-[1180px] mx-auto">
-              <div className="section-bar flex items-center justify-between mb-4">
-                <span>Selected Work</span>
-                <span className="opacity-90">{CASE_STUDIES.length} Projects · 2024–2026</span>
+            <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-4 md:gap-5 items-start">
+              <div>
+                <div className="section-bar flex items-center justify-between mb-4">
+                  <span>Featured Projects</span>
+                  <span className="opacity-90">{CASE_STUDIES.length} Projects · 2024–2026</span>
+                </div>
+
+                <div>
+                  {CASE_STUDIES.map((study, idx) => (
+                    <CaseStudyCard
+                      key={study.id}
+                      ordinal={idx + 1}
+                      isExpanded={expandedCard === idx}
+                      onToggle={() => handleToggle(idx)}
+                      data={study}
+                    />
+                  ))}
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-                {CASE_STUDIES.map((study, idx) => (
-                  <CaseStudyCard
-                    key={study.id}
-                    ordinal={idx + 1}
-                    isExpanded={expandedCard === idx}
-                    onToggle={() => handleToggle(idx)}
-                    data={study}
-                  />
-                ))}
+              <div>
+                <div className="section-bar mb-4">Certifications</div>
+                <div className="space-y-4">
+                  {certifications.map((cert) => (
+                    <div key={cert.name} className="bg-secondary border-2 border-theme shadow-neo p-4">
+                      <Award size={18} className="text-signal mb-2" />
+                      <h4 className="font-display font-bold uppercase text-sm tracking-wide mb-1">
+                        {cert.name}
+                      </h4>
+                      <p className="text-xs text-muted font-mono">
+                        {cert.issuer} · {cert.year}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <motion.button
+                  whileHover={{ x: -2, y: -2, boxShadow: "6px 6px 0 0 var(--ink)", transition: { duration: 0.15 } }}
+                  whileTap={{ scale: 0.98, x: 0, y: 0, boxShadow: "0 0 0 0 var(--ink)", transition: { duration: 0.1 } }}
+                  onClick={() => handleToggle("about")}
+                  className="mt-4 w-full flex items-center justify-center gap-1.5 bg-secondary border-2 border-theme shadow-neo px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.1em]"
+                >
+                  View Full Profile <ChevronRight size={14} />
+                </motion.button>
               </div>
             </div>
           </section>
 
           <section className="px-4 md:px-8 pb-10 md:pb-12">
-            <div className="max-w-[1180px] mx-auto">
+            <div className="max-w-[1400px] mx-auto shadow-neo-lg">
               <CTAStrip />
             </div>
           </section>

@@ -10,79 +10,62 @@ import {
   CheckSquare,
   Terminal,
   FileCode2,
-  Atom,
   Globe,
-  Wind,
-  Layers,
-  Sparkles,
   Server,
-  Cat,
-  Share2,
-  Database,
-  Braces,
-  Container,
-  Cloud,
-  Link,
-  Users,
-  Bot,
   Cpu,
   MessageSquare,
-  TestTube,
+  Workflow,
+  Building2,
+  Database,
   X,
   ChevronRight,
 } from "lucide-react";
 import { useModalA11y, triggerProps } from "./useModalA11y";
 
-const skills = [
+export const skills = [
   "Product Management",
-  "AI/ML",
-  "Next.js",
+  "PRDs",
+  "User Research",
+  "Usability Testing",
+  "Roadmapping",
+  "Competitive Analysis",
   "TypeScript",
-  "Figma",
+  "Next.js",
+  "Python",
   "FastAPI",
-  "LangGraph",
-  "UX Research",
-  "n8n",
-  "System Design",
+  "SQL",
+  "Claude API",
+  "MCP",
 ];
 
-const tools = [
+export const tools = [
   { name: "Figma", icon: <Palette size={16} /> },
-  { name: "Miro", icon: <ClipboardList size={16} /> },
   { name: "Notion", icon: <PenTool size={16} /> },
   { name: "Jira", icon: <CheckSquare size={16} /> },
-  { name: "Python", icon: <Terminal size={16} /> },
+  { name: "Miro", icon: <ClipboardList size={16} /> },
+  { name: "n8n", icon: <Workflow size={16} /> },
+  { name: "Odoo CRM", icon: <Building2 size={16} /> },
   { name: "TypeScript", icon: <FileCode2 size={16} /> },
-  { name: "React", icon: <Atom size={16} /> },
   { name: "Next.js", icon: <Globe size={16} /> },
-  { name: "Tailwind", icon: <Wind size={16} /> },
-  { name: "Shadcn", icon: <Layers size={16} /> },
-  { name: "Framer Motion", icon: <Sparkles size={16} /> },
+  { name: "Python", icon: <Terminal size={16} /> },
   { name: "FastAPI", icon: <Server size={16} /> },
-  { name: "NestJS", icon: <Cat size={16} /> },
-  { name: "GraphQL", icon: <Share2 size={16} /> },
-  { name: "PostgreSQL", icon: <Database size={16} /> },
-  { name: "MongoDB", icon: <Braces size={16} /> },
-  { name: "Docker", icon: <Container size={16} /> },
-  { name: "AWS", icon: <Cloud size={16} /> },
-  { name: "LangChain", icon: <Link size={16} /> },
-  { name: "CrewAI", icon: <Users size={16} /> },
-  { name: "Claude Code", icon: <Bot size={16} /> },
-  { name: "MCP", icon: <Cpu size={16} /> },
+  { name: "SQL", icon: <Database size={16} /> },
   { name: "Claude API", icon: <MessageSquare size={16} /> },
-  { name: "Playwright", icon: <TestTube size={16} /> },
+  { name: "MCP", icon: <Cpu size={16} /> },
 ];
 
-const experiences = [
+export const experiences = [
   {
     role: "AI Product Engineer",
     company: "Odoo Dashboards",
     date: "Jun 2026 – Present",
     location: "Riyadh, KSA",
     points: [
-      "Rebuilt the product frontend as a Next.js and TypeScript SPA with Shadcn, Tailwind and Framer Motion, moving the team off static templates onto shared design tokens and a documented component library; cut first-load JS with route-level code splitting and lazy imports, tracked on Web Vitals.",
-      "Built the chat and query surface against a FastAPI backend, rendering streamed Claude tokens over SSE with React Query caching, optimistic updates and retry handling so long-running report jobs stay responsive.",
-      "Replaced Supabase magic links with an n8n onboarding flow wired into FastAPI: trial signups get custom payloads, activation is verified against Polar.sh API keys, and leads land in Notion and the Odoo CRM with no manual entry.",
+      "Own product for an Odoo analytics add-on serving ~300 branches of F&B, retail and distribution clients, from client feedback to release.",
+      "Wrote the business and technical plan for Onto BI, an AI analyst for Odoo SMEs (1–200 employees); scoped it to forecasting, planning and insights, and cut features Odoo is likely to ship natively.",
+      "Defined the customer lifecycle (demo → trial → API-active) and launched the automation behind it: 13 drip emails across two n8n workflows, with Notion as the lead source of truth.",
+      "Designed a lead-qualification funnel that detects Odoo Community users through a four-signal probe, scores and routes them by region, and enriches contacts via Apollo and Exa.ai.",
+      "Scoped and shipped the mobile MVP around the alerting clients asked for most; ran prototyping and client testing for the redesign of the in-Odoo reporting module.",
     ],
   },
   {
@@ -91,25 +74,27 @@ const experiences = [
     date: "Jun 2025 – Jul 2025",
     location: "Remote",
     points: [
-      "Shipped an AI-powered Shopify support bot end to end, from PRD and design reviews to the React chat widget in production, cutting query resolution time by 25%.",
-      "Built an AI News Curator on the OpenAI Agent SDK and deployed it on Docker and AWS ECS at 99% uptime; three iterations on the agent and retrieval layer lifted feed relevance 25% and dropped delivery latency 35%.",
+      "Wrote the PRD for an AI-powered Shopify support bot, ran reviews with engineering and design, and shipped it to production, cutting query resolution time by 25%.",
+      "Ran three build–measure–learn cycles on an AI news curator, raising feed relevance 25% and cutting delivery latency 35%.",
     ],
   },
 ];
 
-const certifications = [
-  { name: "Google AI Professional", issuer: "Google", year: "2024" },
-  { name: "MCP for LLM Apps", issuer: "Anthropic", year: "2024" },
-  { name: "System Design Maven", issuer: "System Design Maven", year: "2024" },
+export const certifications = [
+  { name: "Claude API, MCP & Claude Code", issuer: "Anthropic Academy", year: "2026" },
+  { name: "Google AI Professional Certificate", issuer: "Google", year: "2026" },
 ];
 
 interface AboutProps {
   className?: string;
   isExpanded?: boolean;
   onToggle?: () => void;
+  /** The homepage now surfaces Skills/Experience/Certifications as their own
+   *  sections and only needs this component for the shared detail modal. */
+  hideTiles?: boolean;
 }
 
-export default function About({ className = "", isExpanded = false, onToggle }: AboutProps) {
+export default function About({ className = "", isExpanded = false, onToggle, hideTiles = false }: AboutProps) {
   const toggle = onToggle ?? (() => { });
   const modalRef = useModalA11y(isExpanded, toggle);
 
@@ -117,6 +102,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
     <>
       {/* Homepage bento cluster: About / Experience / Portrait / Toolset, all
           opening the same manufacturer-page modal below. */}
+      {!hideTiles && (
       <div className={`grid grid-cols-1 md:grid-cols-[1.4fr_1fr_0.9fr] md:grid-rows-2 gap-4 md:gap-5 ${className}`}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -138,7 +124,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
               Umar Zubair
             </h2>
             <p className="text-sm md:text-base leading-relaxed opacity-90 max-w-[42ch]">
-              Based in Riyadh. I focus on product management and AI system design. I care about building solid backend architecture and making sure our AI tools actually make sense for the end user.
+              Technical product builder who takes customer problems to shipped features. Based in Riyadh, KSA — CS degree from LUMS.
             </p>
           </div>
           <span className="mt-8 inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-[0.1em]">
@@ -207,6 +193,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
           </div>
         </motion.div>
       </div>
+      )}
 
       {/* Full manufacturer page */}
       <AnimatePresence>
@@ -244,7 +231,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                     <h2 id="about-modal-title" className="font-display text-xl md:text-2xl font-black uppercase tracking-tight">
                       Umar Zubair
                     </h2>
-                    <p className="text-sm text-muted mt-0.5">AI Frontend Engineer / Technical PM</p>
+                    <p className="text-sm text-muted mt-0.5">Technical PM</p>
                   </div>
                 </div>
                 <motion.button
@@ -263,7 +250,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                 <div className="section-bar mt-0 mb-4">General Description</div>
                 <div className="max-w-[70ch] text-base leading-relaxed space-y-4 mb-4">
                   <p>
-                    Based in Riyadh. I focus on product management and AI system design. I care about building solid backend architecture and making sure our AI tools actually make sense for the end user.
+                    Technical product builder who takes customer problems to shipped features. I own Odoo Dashboards, an analytics product live across ~300 client branches, from discovery and roadmap to the code that ships it. CS degree from LUMS with HCI and service-management coursework.
                   </p>
                   <p>
                     I believe the best products solve real problems while feeling effortless to
@@ -330,7 +317,7 @@ export default function About({ className = "", isExpanded = false, onToggle }: 
                 </div>
 
                 <div className="section-bar mb-4">Compliance Marks</div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {certifications.map((cert) => (
                     <div key={cert.name} className="border-2 border-theme p-4">
                       <div className="font-mono text-[0.6875rem] text-signal font-bold uppercase tracking-[0.14em] mb-2">

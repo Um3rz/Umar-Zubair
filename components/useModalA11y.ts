@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -19,7 +19,12 @@ export function useModalA11y(isOpen: boolean, onClose: () => void) {
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
 
-  useEffect(() => {
+  // Layout effect, not a passive one: the native view-transition path commits
+  // this DOM update via flushSync before its "after" snapshot is taken, so the
+  // scroll lock must land in that same synchronous commit — a passive effect
+  // fires a tick later, after the snapshot, and the scrollbar vanishing then
+  // shifts the whole page sideways mid-transition.
+  useLayoutEffect(() => {
     if (!isOpen) return;
 
     const trigger = document.activeElement as HTMLElement | null;

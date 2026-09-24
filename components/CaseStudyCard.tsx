@@ -2,8 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, X } from "lucide-react";
-import { useLayoutEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
 import {
   OrderingInfo,
   SpecTable,
@@ -72,142 +70,84 @@ export default function CaseStudyCard({ data, ordinal, isExpanded, onToggle }: C
     ...(data.problemSpace ? [{ key: "Problem Space", value: data.problemSpace }] : []),
   ];
 
-  // Native morph only when the browser supports it and the visitor allows motion;
-  // everything else keeps the existing layoutId crossfade untouched below.
-  const [useNativeTransition] = useState(
-    () =>
-      typeof document !== "undefined" &&
-      !!document.startViewTransition &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches === false
-  );
-  const tileRef = useRef<HTMLDivElement>(null);
-  // Ignore re-entrant toggles (Escape-then-click, fast double-click) until the
-  // current transition settles, since starting one mid-flight throws.
-  const transitionInFlight = useRef(false);
-  const handleToggle = useNativeTransition
-    ? () => {
-        if (transitionInFlight.current) return;
-        transitionInFlight.current = true;
-        const transition = document.startViewTransition!(() => flushSync(() => onToggle()));
-        // The browser can legally skip the visual transition (e.g. no longer the
-        // focused tab) while still applying the DOM update — `ready` rejects in
-        // that case even though nothing is actually broken, so it needs a catch
-        // or it logs as an unhandled-rejection exception on every such toggle.
-        transition.ready.catch(() => {});
-        transition.finished.finally(() => {
-          transitionInFlight.current = false;
-        });
-      }
-    : onToggle;
-
-  const modalRef = useModalA11y(isExpanded, handleToggle);
-
-  // Hand the shared name to whichever element is about to be on-screen, so the
-  // browser morphs the row into the sheet instead of crossfading two snapshots.
-  useLayoutEffect(() => {
-    if (!useNativeTransition) return;
-    tileRef.current?.style.setProperty("view-transition-name", isExpanded ? "none" : `card-${data.id}`);
-    modalRef.current?.style.setProperty("view-transition-name", isExpanded ? `card-${data.id}` : "none");
-  }, [isExpanded, useNativeTransition, data.id, modalRef]);
+  // Same mechanism as the About modal: a plain layoutId crossfade, no native
+  // view-transition path. That path forced the DOM update through flushSync
+  // ahead of the browser's own snapshot timing, which is what caused the
+  // open-transition glitch — the crossfade doesn't have that race.
+  const modalRef = useModalA11y(isExpanded, onToggle);
 
   return (
     <>
-      {/* Bento work card */}
+      {/* Numbered work row */}
       <motion.div
-        ref={tileRef}
         id={data.id}
-        layoutId={useNativeTransition ? undefined : `card-${data.id}`}
+        layoutId={`card-${data.id}`}
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 0.99, transition: { duration: 0.15, ease: "easeOut" } }}
-        whileTap={{ scale: 0.97, transition: { duration: 0.1, ease: "easeOut" } }}
+        whileTap={{ scale: 0.99, transition: { duration: 0.1, ease: "easeOut" } }}
         transition={{ delay: (ordinal - 1) * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         viewport={{ once: true, margin: "-50px" }}
-        onClick={handleToggle}
-        {...triggerProps(handleToggle, isExpanded)}
-        className={`group flex flex-col justify-between border-2 border-theme p-5 md:p-6 min-h-[200px]
-          transition-colors duration-150 cursor-pointer ${variant} ${colored ? "hover:opacity-90" : "hover:bg-row-wash"}`}
+        onClick={onToggle}
+        {...triggerProps(onToggle, isExpanded)}
+        className={`group relative flex flex-col md:flex-row md:items-center gap-2 md:gap-6 border-2 border-theme border-t-0 first:border-t-2
+          p-5 md:px-8 md:py-6 transition-colors duration-150 cursor-pointer ${variant} ${colored ? "hover:opacity-90" : "hover:bg-row-wash"}`}
       >
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <span
-              className={`font-mono font-semibold text-xs uppercase tracking-[0.1em] ${
-                colored ? "opacity-80" : "text-signal"
-              }`}
-            >
-              {part.replace("UZ-", "")} / {data.category ?? "Project"}
-            </span>
-            <ChevronRight
-              size={18}
-              className={`group-hover:translate-x-1 transition-all ${
-                colored ? "opacity-70 group-hover:opacity-100" : "text-muted group-hover:text-signal"
-              }`}
-            />
-          </div>
-          <h3 className="font-display text-xl md:text-2xl font-black uppercase tracking-tight mb-2">
-            {data.title}
-          </h3>
-          <p className={`text-sm ${colored ? "opacity-80" : "text-muted"}`}>{data.meta}</p>
-        </div>
-
         <span
-          className={`mt-6 inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-[0.1em] ${
-            colored ? "" : "text-signal"
+          className={`font-mono font-semibold text-xs uppercase tracking-[0.1em] shrink-0 md:w-40 ${
+            colored ? "opacity-80" : "text-signal"
           }`}
         >
-          Read Case Study
-          <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          {part.replace("UZ-", "")} / {data.category ?? "Project"}
         </span>
+
+        <h3 className="font-display text-2xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight flex-1">
+          {data.title}
+        </h3>
+
+        <div className="flex items-center justify-between md:justify-end gap-4 md:shrink-0">
+          <span
+            className={`inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-[0.1em] ${
+              colored ? "" : "text-signal"
+            }`}
+          >
+            Read Case Study
+          </span>
+          <ChevronRight
+            size={20}
+            className={`group-hover:translate-x-1 transition-all ${
+              colored ? "opacity-70 group-hover:opacity-100" : "text-muted group-hover:text-signal"
+            }`}
+          />
+        </div>
       </motion.div>
 
       {/* Full sheet */}
-      {useNativeTransition ? (
-        isExpanded && (
-          <div
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 bg-black/40 backdrop-blur-sm"
+            /* Close only when the press *starts* on the scrim, so selecting text
+               inside the dialog and releasing past its edge doesn't dismiss it. */
             onMouseDown={(e) => {
-              if (e.target === e.currentTarget) handleToggle();
+              if (e.target === e.currentTarget) onToggle();
             }}
           >
-            <div
+            <motion.div
               ref={modalRef}
+              layoutId={`card-${data.id}`}
               role="dialog"
               aria-modal="true"
               aria-labelledby={`${data.id}-title`}
               className="bg-primary w-full max-w-5xl h-full md:h-auto md:max-h-[90vh] overflow-y-auto border-2 border-theme relative flex flex-col"
             >
-              <ModalContent data={data} part={part} metaItems={metaItems} onClose={handleToggle} />
-            </div>
-          </div>
-        )
-      ) : (
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 bg-black/40 backdrop-blur-sm"
-              /* Close only when the press *starts* on the scrim, so selecting text
-                 inside the dialog and releasing past its edge doesn't dismiss it. */
-              onMouseDown={(e) => {
-                if (e.target === e.currentTarget) onToggle();
-              }}
-            >
-              <motion.div
-                ref={modalRef}
-                layoutId={`card-${data.id}`}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={`${data.id}-title`}
-                className="bg-primary w-full max-w-5xl h-full md:h-auto md:max-h-[90vh] overflow-y-auto border-2 border-theme relative flex flex-col"
-              >
-                <ModalContent data={data} part={part} metaItems={metaItems} onClose={onToggle} />
-              </motion.div>
+              <ModalContent data={data} part={part} metaItems={metaItems} onClose={onToggle} />
             </motion.div>
-          )}
-        </AnimatePresence>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

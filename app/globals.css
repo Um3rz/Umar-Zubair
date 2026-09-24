@@ -10,11 +10,12 @@
   --font-mono: 'Azeret Mono', monospace;
 
   /* Light is the default rendition of the sheet — bare :root, not a class.
-     Dark below is a negative print of the same document, not a second palette. */
-  --paper: #F3F1E9;
-  --paper-2: #E7E4D8;
-  --ink: #13160F;
-  --ink-2: #5A6152;
+     Dark below is a negative print of the same document, not a second palette.
+     Palette: Onyx / Wheat / Oceanic / Nectarine. */
+  --paper: #FFF6E9;
+  --paper-2: #F5EAD5;
+  --ink: #0A171D;
+  --ink-2: #4A5A61;
   /* Bento borders are load-bearing ink, not a faint rule — every border-theme
      usage across the app rides this token, so this one change is what makes
      the whole site read as thick-black-bordered blocks instead of hairlines. */
@@ -23,41 +24,51 @@
   /* The field and the text are separate tokens on purpose: the outgoing system's
      contrast bug came from using one fill color on both background and text.
      --signal-field never belongs on a `color` property. */
-  --signal-field: #1CA35E;
-  --signal-field-hover: #16874C;
-  --signal-text: #0E6B3D;
-  --on-signal: #0B0D09;
+  --signal-field: #003F47;
+  --signal-field-hover: #002B31;
+  --signal-text: #003F47;
+  --on-signal: #FFF6E9;
 
-  --limit-field: #D6470F;
-  --limit-text: #A6350A;
-  --on-limit: #FFFFFF;
+  --limit-field: #FFBD76;
+  --limit-text: #C98A42;
+  --on-limit: #0A171D;
 
-  --row-wash: rgba(28, 163, 94, 0.08);
+  --row-wash: rgba(0, 63, 71, 0.08);
+
+  /* Offset "sticker" shadow — hard-edged, no blur, always cast in ink. */
+  --shadow-offset: 4px;
+  --shadow-neo: var(--shadow-offset) var(--shadow-offset) 0 0 var(--ink);
+  --shadow-neo-lg: 8px 8px 0 0 var(--ink);
 }
 
 html.dark {
-  --paper: #101310;
-  --paper-2: #1A1E19;
-  --ink: #E8EAE4;
-  --ink-2: #9AA394;
+  --paper: #0A171D;
+  --paper-2: #12222B;
+  --ink: #FFF6E9;
+  --ink-2: #C9BFA9;
   --rule: var(--ink);
 
-  --signal-field: #1CA35E;
-  --signal-field-hover: #22B86A;
-  --signal-text: #3FD98A;
-  --on-signal: #0B0D09;
+  --signal-field: #003F47;
+  --signal-field-hover: #0A5561;
+  --signal-text: #3FA8B5;
+  --on-signal: #FFF6E9;
 
-  --limit-field: #D6470F;
-  --limit-text: #FF8A5B;
-  --on-limit: #0B0D09;
+  --limit-field: #FFBD76;
+  --limit-text: #FFD199;
+  --on-limit: #0A171D;
 
-  --row-wash: rgba(63, 217, 138, 0.1);
+  --row-wash: rgba(63, 168, 181, 0.12);
 }
 
 html {
   scroll-behavior: smooth;
   /* Clears the fixed header rail so anchored targets don't land underneath it. */
   scroll-padding-top: 5rem;
+  /* Reserves the scrollbar's width permanently, so a modal locking body scroll
+     (overflow: hidden) never changes the viewport width — without this, the
+     scrollbar vanishing mid-open-transition caused the whole page to jump
+     sideways right as a case study or the About modal opened. */
+  scrollbar-gutter: stable;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -174,5 +185,56 @@ body {
 
   .pill {
     @apply px-3 py-1.5 border-2 text-xs font-mono uppercase tracking-[0.08em] font-semibold;
+  }
+
+  /* Hard offset "sticker" shadow — no blur, cast in ink, shifts on press so
+     the element reads as a physical card lifting off the page. */
+  .shadow-neo {
+    box-shadow: var(--shadow-neo);
+    transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+  }
+  .shadow-neo-lg {
+    box-shadow: var(--shadow-neo-lg);
+    transition: box-shadow 0.15s ease-out, transform 0.15s ease-out;
+  }
+  .shadow-neo-press:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--ink);
+  }
+  .shadow-neo-press:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 0 var(--ink);
+  }
+
+  /* Rotated sticker badge — the hero's "Hey, I'm ___" eyebrow. */
+  .sticker {
+    @apply inline-block px-3 py-1.5 text-xs font-mono font-bold uppercase tracking-[0.1em] border-2 border-theme;
+    transform: rotate(-2deg);
+  }
+
+  /* Faint dot grid, used behind the hero's intro column. Dots are mixed down
+     to ~12% so they read as texture, not as noise sitting under body text. */
+  .bg-dot-grid {
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: -10px -10px;
+  }
+
+  /* Continuous marquee — two copies of the track side by side, sliding left
+     by exactly one copy's width so the loop has no visible seam. */
+  .marquee-track {
+    animation: marquee 55s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 }

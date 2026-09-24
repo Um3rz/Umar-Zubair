@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { Github, Linkedin, Mail } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import profilePhoto from "./profile-photo.png";
 
 interface HeroProps {
   className?: string;
@@ -9,7 +12,7 @@ interface HeroProps {
   onViewWork?: () => void;
 }
 
-const ROLES = ["Product Manager", "AI Engineering"];
+const HEADLINE = "Building the right thing, then building it right.";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -20,14 +23,12 @@ const fadeUp = {
   }),
 };
 
-// Original site's headline treatment — types, holds, deletes, repeats.
-const HEADLINE = "Building the right thing, then building it right.";
-type Phase = "typing" | "waiting" | "deleting";
-
+// Slow type-hold-delete loop. The h1 below reserves a fixed min-height for
+// this text so the hero box never grows/shrinks as characters come and go.
 function useTypewriter(text: string) {
   const [displayText, setDisplayText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
-  const phaseRef = useRef<Phase>("typing");
+  const phaseRef = useRef<"typing" | "waiting" | "deleting">("typing");
   const indexRef = useRef(0);
 
   useEffect(() => {
@@ -42,19 +43,19 @@ function useTypewriter(text: string) {
         if (indexRef.current < text.length) {
           indexRef.current++;
           setDisplayText(text.slice(0, indexRef.current));
-          timeout = setTimeout(animate, 50);
+          timeout = setTimeout(animate, 95);
         } else {
           phaseRef.current = "waiting";
           timeout = setTimeout(() => {
             phaseRef.current = "deleting";
             animate();
-          }, 2000);
+          }, 2600);
         }
       } else if (phaseRef.current === "deleting") {
         if (indexRef.current > 0) {
           indexRef.current--;
           setDisplayText(text.slice(0, indexRef.current));
-          timeout = setTimeout(animate, 30);
+          timeout = setTimeout(animate, 45);
         } else {
           phaseRef.current = "typing";
           animate();
@@ -82,55 +83,116 @@ export default function Hero({ className = "", onLearnMore, onViewWork }: HeroPr
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={`tile-signal border-2 border-theme p-6 md:p-12 ${className}`}
+      className={`bg-primary border-2 border-theme shadow-neo bg-dot-grid text-center px-6 py-12 md:py-16 ${className}`}
     >
+      {/* Scattered sticker row */}
       <motion.div
         custom={0}
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        className="flex items-center justify-between gap-4 mb-8 font-mono text-xs uppercase tracking-[0.14em] font-semibold"
+        className="flex flex-wrap items-center justify-center gap-3 mb-8"
       >
-        <span>{ROLES.join(" · ")}</span>
-        <span className="hidden sm:block shrink-0">Riyadh,SA</span>
+        <span className="sticker tile-limit shadow-neo -rotate-2">Hey, I&apos;m Umar 👋</span>
+        <span className="sticker bg-secondary rotate-0">Technical Product Owner</span>
+        <div className="w-14 h-14 border-2 border-theme shadow-neo overflow-hidden shrink-0 rotate-2">
+          <Image
+            src={profilePhoto}
+            alt="Umar Zubair"
+            placeholder="blur"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </motion.div>
 
-      <motion.h1
+      {/* Name badge */}
+      <motion.div
         custom={1}
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        className="font-display text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] mb-6 max-w-[20ch] min-h-[2.85em] text-balance"
+        className="inline-block border-2 border-theme shadow-neo-lg px-8 py-4 md:px-12 md:py-6 mb-8 bg-secondary"
+      >
+        <h2 className="font-display text-5xl md:text-7xl font-black uppercase tracking-tight leading-none">
+          Umar Zubair
+        </h2>
+      </motion.div>
+
+      <motion.h1
+        custom={2}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="font-display text-xl md:text-3xl font-bold leading-snug max-w-[36ch] mx-auto mb-6 min-h-[2.8em] text-balance"
       >
         {displayText}
         <span
           aria-hidden="true"
-          className={`inline-block w-[0.55ch] md:w-[0.5ch] -mb-1 h-[0.85em] align-middle bg-[var(--ink)] ml-1 ${showCursor ? "opacity-100" : "opacity-0"
+          className={`inline-block w-[0.5ch] -mb-0.5 h-[0.9em] align-middle bg-[var(--ink)] ml-1 ${showCursor ? "opacity-100" : "opacity-0"
             }`}
         />
       </motion.h1>
 
       <motion.p
-        custom={2}
+        custom={3}
         variants={fadeUp}
         initial="hidden"
         animate="show"
-        className="text-base md:text-lg leading-relaxed max-w-[62ch] mb-10 font-medium"
+        className="text-sm md:text-base leading-relaxed max-w-[56ch] mx-auto mb-8 text-secondary"
       >
-        Research, PRD, and implementation on all seven projects below (same person, no handoff). Currently building the customer-facing platform at Odoo Dashboards.
+        I'm a technical product builder who takes customer problems to shipped features. I own Odoo Dashboards webapp , and Ontology based BI and Forecasting AI feature, an analytics product live across ~300 client branches, from discovery and roadmap to the code that ships it.
       </motion.p>
 
-      <motion.div custom={3} variants={fadeUp} initial="hidden" animate="show" className="flex flex-wrap gap-3">
-        <motion.button whileTap={{ scale: 0.96 }} onClick={onViewWork} className="btn-invert">
-          See the Work →
+      <motion.div
+        custom={4}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="flex flex-wrap items-center justify-center gap-3 mb-8"
+      >
+        <motion.button
+          whileHover={{ x: -2, y: -2, boxShadow: "6px 6px 0 0 var(--ink)", transition: { duration: 0.15 } }}
+          whileTap={{ scale: 0.98, x: 0, y: 0, boxShadow: "0 0 0 0 var(--ink)", transition: { duration: 0.1 } }}
+          onClick={onViewWork}
+          className="tile-limit border-2 border-theme shadow-neo px-6 py-3 text-sm font-mono font-semibold tracking-wide cursor-pointer"
+        >
+          View My Work →
         </motion.button>
         <motion.button
-          whileTap={{ scale: 0.96 }}
+          whileHover={{ x: -2, y: -2, boxShadow: "6px 6px 0 0 var(--ink)", transition: { duration: 0.15 } }}
+          whileTap={{ scale: 0.98, x: 0, y: 0, boxShadow: "0 0 0 0 var(--ink)", transition: { duration: 0.1 } }}
           onClick={onLearnMore}
-          className="px-6 py-3 text-sm font-mono font-semibold tracking-wide border-2 border-[var(--ink)] cursor-pointer hover:bg-[var(--ink)]/10 transition-colors"
+          className="bg-secondary border-2 border-theme shadow-neo px-6 py-3 text-sm font-mono font-semibold tracking-wide cursor-pointer"
         >
           More About Me →
         </motion.button>
+      </motion.div>
+
+      <motion.div
+        custom={5}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="flex items-center justify-center gap-2"
+      >
+        {[
+          { href: "https://github.com/Um3rz", label: "GitHub", Icon: Github },
+          { href: "https://linkedin.com/in/umar-zubair960", label: "LinkedIn", Icon: Linkedin },
+          { href: "mailto:umarzubaircs@gmail.com", label: "Email", Icon: Mail },
+        ].map(({ href, label, Icon }) => (
+          <motion.a
+            key={label}
+            href={href}
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+            aria-label={label}
+            whileHover={{ x: -1, y: -1, boxShadow: "3px 3px 0 0 var(--ink)", transition: { duration: 0.15 } }}
+            whileTap={{ scale: 0.94 }}
+            className="bg-secondary border-2 border-theme p-2.5"
+          >
+            <Icon size={16} />
+          </motion.a>
+        ))}
       </motion.div>
     </motion.div>
   );

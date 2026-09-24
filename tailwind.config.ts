@@ -10,8 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        signal: "#00713F",
-        limit: "#D6470F",
+        signal: "#003F47",
+        limit: "#FFBD76",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "sans-serif"],

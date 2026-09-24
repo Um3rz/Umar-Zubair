@@ -15,9 +15,9 @@ export default function CTAStrip() {
       <div className="p-6 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
           <h2 className="font-display text-2xl md:text-3xl font-black uppercase tracking-tight">
-            Open to AI product roles
+            Open to Product roles
           </h2>
-          <p className="text-sm mt-2 opacity-80">Based in Riyadh, open to opportunities in EU and Middle East</p>
+          <p className="text-sm mt-2 opacity-80">Based in Riyadh, KSA · Open to roles in EU</p>
         </div>
         <div className="flex flex-col items-start md:items-end gap-2 shrink-0">
           <motion.div whileTap={{ scale: 0.96 }}>
@@ -43,7 +43,7 @@ export function Footer() {
   return (
     <footer id="footer" className="border-t-2 border-theme px-6 py-8 text-center">
       <p className="font-mono text-xs uppercase tracking-[0.1em] text-muted">
-        Umar Zubair · Product Engineer / Technical PM ·{" "}
+        Umar Zubair · Technical Product Owner ·{" "}
         <a
           href="https://linkedin.com/in/Umar-Zubair960"
           className="text-signal no-underline hover:underline"

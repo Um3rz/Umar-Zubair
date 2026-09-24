@@ -49,3 +49,13 @@ Three layers stack, and they fight:
 - Anything using hooks, framer-motion, or three.js needs `"use client"` — effectively every component here.
 - Fonts load via `@import` from Google Fonts in `globals.css` and are exposed as `--font-serif` / `--font-sans` → Tailwind's `font-serif` / `font-sans`.
 - Neo-brutalist offset shadows are Tailwind extensions: `shadow-neo`, `shadow-neoLg`. Buttons: `.btn-primary` / `.btn-secondary` in `globals.css`.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues (`Um3rz/Umar-Zubair`) via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
