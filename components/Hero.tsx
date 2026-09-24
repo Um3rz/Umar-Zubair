@@ -140,7 +140,7 @@ export default function Hero({ className = "", onLearnMore, onViewWork }: HeroPr
         animate="show"
         className="text-sm md:text-base leading-relaxed max-w-[56ch] mx-auto mb-8 text-secondary"
       >
-        I'm a technical product builder who takes customer problems to shipped features. I own Odoo Dashboards webapp , and Ontology based BI and Forecasting AI feature, an analytics product live across ~300 client branches, from discovery and roadmap to the code that ships it.
+        I am a technical product builder who takes customer problems to shipped features. I own Odoo Dashboards webapp , and Ontology based BI and Forecasting AI feature, an analytics product live across ~300 client branches, from discovery and roadmap to the code that ships it.
       </motion.p>
 
       <motion.div
