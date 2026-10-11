@@ -225,12 +225,13 @@ body {
   .marquee-track {
     animation: marquee 55s linear infinite;
   }
-  .marquee-track:hover {
-    animation-play-state: paused;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
+  /* Pause-on-hover only for real pointers. Touchscreens fake a persistent
+     :hover on tap with no matching "leave" event, so on mobile this rule
+     would latch the animation paused after the first touch and never
+     resume — that's the "doesn't slide on mobile" bug. */
+  @media (hover: hover) and (pointer: fine) {
+    .marquee-track:hover {
+      animation-play-state: paused;
     }
   }
   @keyframes marquee {

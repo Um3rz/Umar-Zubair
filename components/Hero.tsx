@@ -32,11 +32,6 @@ function useTypewriter(text: string) {
   const indexRef = useRef(0);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplayText(text);
-      return;
-    }
-
     let timeout: ReturnType<typeof setTimeout>;
     const animate = () => {
       if (phaseRef.current === "typing") {
