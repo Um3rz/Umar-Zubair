@@ -532,7 +532,100 @@ const vitLessons = [
 
 const vitOutcome = "95% accuracy on OASIS from a MobileNetV2 + ViT hybrid, trained end to end on a self-built data pipeline.";
 
+const ontologySections = (
+  <>
+    <SectionBar>01 — The Problem</SectionBar>
+    <h2 className={H2}>
+      An AI analyst can&apos;t be allowed to see more than the person asking
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Odoo users want to ask their data questions in plain language. The easy version hands an
+      LLM a database connection and hopes. That breaks the moment two users have different
+      companies, record rules or access rights — and it means a third-party service holding your
+      business data and your chat history.
+    </p>
+    <SpecTable
+      stats={[
+        { number: "12", label: "Steps max per turn" },
+        { number: "5", label: "Tool calls per step" },
+        { number: "8", label: "Domain templates" },
+      ]}
+    />
+    <SectionBar>02 — Architecture</SectionBar>
+    <h2 className={H2}>
+      Odoo owns the data, Querygen owns the reasoning
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      The browser only talks to Odoo, and Odoo is the only thing that talks to Querygen, a separate
+      FastAPI service. Querygen holds the ontology, picks which tools to run and writes the answer,
+      but never reads Odoo business data itself. Every query runs inside Odoo, as the user who asked.
+    </p>
+    <h3 className={H3}>A turn is a state machine</h3>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Each question is a turn: queued → running → done, refused, failed or cancelled. A cron job picks
+      up queued turns with <code>FOR UPDATE SKIP LOCKED</code> and moves each one forward a step at a
+      time. Odoo sends the question, recent history and a catalog of allowed models and metrics;
+      Querygen replies with up to five tool calls or a final answer card; Odoo runs the tools in a
+      user-scoped environment and sends the results back. Turns are capped at 12 steps and 15 minutes,
+      with backoff on 429s and 5xx errors.
+    </p>
+    <h3 className={H3}>Streaming</h3>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Answer text streams to the browser over Odoo&apos;s bus from a separate database cursor, so it
+      shows up before the step&apos;s transaction commits. The final card comes through an
+      access-checked RPC — bus messages never carry evidence.
+    </p>
+    <h3 className={H3}>The ontology</h3>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      YAML templates per domain (sales, purchase, inventory, accounting, CRM, POS and more) sit over a
+      catalog of Odoo 16 models. A builder profiles each tenant&apos;s schema and data and proposes
+      objects with an LLM; a compiler turns the specs into signed queries; releases are versioned per
+      tenant, with drift checks for when Odoo&apos;s schema moves underneath them.
+    </p>
+    <SectionBar>03 — Trust</SectionBar>
+    <h2 className={H2}>
+      Saved answers re-check themselves
+    </h2>
+    <p className="text-base md:text-lg mb-4 max-w-[70ch]">
+      Every tool result is fingerprinted, and each turn stores a hash of the asker&apos;s groups,
+      companies, record rules and access rights. When a saved answer is opened again, Odoo re-runs its
+      evidence as the current viewer. If their access is different, the answer is hidden. If access
+      matches but the data has changed, it&apos;s shown and marked stale.
+    </p>
+    <BlockDiagram
+      features={[
+        { icon: <ShieldCheck size={22} />, title: "Allowlisted models", description: "Only mapped models are queryable. Sensitive models are blocked outright." },
+        { icon: <Layers size={22} />, title: "No personal data in metrics", description: "Personal-data columns are excluded from the metrics the agent can use." },
+        { icon: <Gauge size={22} />, title: "Per-company switches", description: "Every company in scope needs BI enabled and not paused. Credits are charged per answer." },
+        { icon: <FileText size={22} />, title: "No chat text on the server", description: "Agent state travels as a sealed blob; Querygen's tables hold counts and IDs, never questions or answers." },
+      ]}
+    />
+    <SectionBar>04 — Lessons</SectionBar>
+  </>
+);
+
+const ontologyLessons = [
+  { number: 1, title: "Run the query where the permissions live", description: "Odoo already knows who can see what. Executing tools inside Odoo as the user meant not rebuilding access control in a second place." },
+  { number: 2, title: "A refusal is just another tool result", description: "When a tool is blocked, the model gets a failed result it can work around instead of the whole turn dying." },
+  { number: 3, title: "Keep the reasoning service stateless", description: "Sealing the agent's state and sending it back with each step means Querygen never has to store anyone's conversation." },
+];
+
+const ontologyOutcome = "A native BI chat inside Odoo 16 that answers from a per-tenant ontology, runs every query as the person asking, and hides or flags saved answers when access or data changes.";
+
 const CASE_STUDIES = [
+  {
+    id: "odoo-ontology",
+    title: "Odoo Ontology Layer",
+    category: "AI · Data",
+    meta: "Ontology layer and native BI chat for Odoo 16",
+    proof: "User-scoped queries · self-checking answers",
+    tools: "Odoo 16, Python, FastAPI, PostgreSQL, LangGraph, OWL",
+    context: "Odoo Dashboards",
+    content: ontologySections,
+    lessons: ontologyLessons,
+    outcome: ontologyOutcome,
+    link: "https://github.com/Um3rz/odoo-ontology-layer",
+  },
   {
     id: "serenely",
     title: "Serenely",

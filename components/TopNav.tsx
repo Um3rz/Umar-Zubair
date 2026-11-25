@@ -55,7 +55,7 @@ export default function TopNav() {
           <motion.a
             whileHover={{ x: -2, y: -2, boxShadow: "6px 6px 0 0 var(--ink)", transition: { duration: 0.15 } }}
             whileTap={{ scale: 0.96, x: 0, y: 0, boxShadow: "0 0 0 0 var(--ink)", transition: { duration: 0.1 } }}
-            href="/Umar_Zubair_Technical_Product_Manager_2026_Resume"
+            href="/Umar_Zubair_Technical_Product_Manager_2026_Resume.pdf"
             download="Umar_Zubair_CV.pdf"
             className="font-mono text-xs font-bold uppercase tracking-[0.1em] px-3 py-1.5 border-2 border-theme tile-limit shadow-neo"
           >

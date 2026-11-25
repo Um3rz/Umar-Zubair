@@ -34,6 +34,7 @@ export const skills = [
   "Python",
   "FastAPI",
   "SQL",
+  "LangGraph",
   "Claude API",
   "MCP",
 ];
@@ -50,6 +51,7 @@ export const tools = [
   { name: "Python", icon: <Terminal size={16} /> },
   { name: "FastAPI", icon: <Server size={16} /> },
   { name: "SQL", icon: <Database size={16} /> },
+  { name: "LangGraph", icon: <Workflow size={16} /> },
   { name: "Claude API", icon: <MessageSquare size={16} /> },
   { name: "MCP", icon: <Cpu size={16} /> },
 ];
@@ -65,6 +67,7 @@ export const experiences = [
       "Wrote the business and technical plan for Onto BI, an AI analyst for Odoo SMEs (1–200 employees); scoped it to forecasting, planning and insights, and cut features Odoo is likely to ship natively.",
       "Defined the customer lifecycle (demo → trial → API-active) and launched the automation behind it: 13 drip emails across two n8n workflows, with Notion as the lead source of truth.",
       "Designed a lead-qualification funnel that detects Odoo Community users through a four-signal probe, scores and routes them by region, and enriches contacts via Apollo and Exa.ai.",
+      "Built an ontology layer and native BI chat for Odoo 16: users ask questions in plain language, a FastAPI service plans the tools, and every query runs inside Odoo under the asker's own access rights.",
       "Scoped and shipped the mobile MVP around the alerting clients asked for most; ran prototyping and client testing for the redesign of the in-Odoo reporting module.",
     ],
   },
@@ -250,11 +253,11 @@ export default function About({ className = "", isExpanded = false, onToggle, hi
                 <div className="section-bar mt-0 mb-4">General Description</div>
                 <div className="max-w-[70ch] text-base leading-relaxed space-y-4 mb-4">
                   <p>
-                    Technical product builder who takes customer problems to shipped features. I own Odoo Dashboards, an analytics product live across ~300 client branches, from discovery and roadmap to the code that ships it. CS degree from LUMS with HCI and service-management coursework.
+                    Technical product builder who takes customer problems to shipped features. I own Odoo Dashboards, an analytics product live across ~300 client branches, from discovery and roadmap to the code that ships it. Lately that means an AI chat that lets people ask their Odoo data questions in plain English without ever seeing more than their permissions allow. CS degree from LUMS with HCI and service-management coursework.
                   </p>
                   <p>
                     I believe the best products solve real problems while feeling effortless to
-                    use. Whether it&apos;s an autonomous QA agent or a frictionless email manager
+                    use. Whether it&apos;s a BI chat that respects Odoo&apos;s access rules, an autonomous QA agent or a frictionless email manager
                     for students, I thrive on turning complex technical challenges into intuitive
                     user experiences.
                   </p>
